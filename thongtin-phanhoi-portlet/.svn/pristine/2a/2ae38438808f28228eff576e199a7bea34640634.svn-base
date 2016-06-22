@@ -1,0 +1,25 @@
+package vn.dtt.ns.thongtinphanhoi.util;
+
+public class ThongTinPhanHoiConstants {
+	public interface TrangThaiYcgt{
+		public static final int DA_TAO_YCGT = 1;
+		public static final int CHUA_TAO_YCGT = 0;
+	}
+	
+	public interface TrangThaiGiaiTrinh{
+		public static final String DA_TAO_YCGT = "DA_TAO_YCGT";
+		public static final String DANG_XU_LY = "DANG_XU_LY";
+		public static final String DA_DUOC_GIAI_TRINH = "DA_DUOC_GIAI_TRINH";
+		public static final String HUY = "HUY";
+	}
+	
+	public interface ActionMode{
+		public static final int HUY_YCGT = 0;
+		public static final int DONG_YCGT = 1;		
+		public static final int LUU = 11;
+		public static final int GUI_DUYET = 21;
+		public static final int GUI_GT = 31;
+		public static final int YEUCAU_GIAITRINHLAI = 32;
+		public static final int DUYET_YCGT = 41;		
+	}
+}

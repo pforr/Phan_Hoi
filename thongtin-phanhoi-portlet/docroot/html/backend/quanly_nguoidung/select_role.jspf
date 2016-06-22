@@ -1,0 +1,72 @@
+<!-- Add role -->
+
+<%@page import="com.liferay.portal.kernel.portlet.LiferayWindowState"%>
+<liferay-ui:error-marker key="errorSection" value="roles" />
+
+<liferay-ui:membership-policy-error />
+
+<liferay-ui:message key="selete-regular-roles" />
+
+<liferay-ui:search-container
+	headerNames="title,null"
+	id="rolesSearchContainer"
+>
+	<liferay-ui:search-container-results
+		results="<%= selRoles %>"
+		total="<%= selRoles.size() %>"
+	/>
+
+	<liferay-ui:search-container-row
+		className="com.liferay.portal.model.Role"
+		keyProperty="roleId"
+		modelVar="role"
+	>
+
+		<liferay-ui:search-container-column-text
+			name="title"
+			value="<%= HtmlUtil.escape(role.getTitle(locale)) %>"
+		/>
+		
+		<c:if test="<%= !RoleMembershipPolicyUtil.isRoleRequired(selUser.getUserId(), role.getRoleId()) %>">
+			<liferay-ui:search-container-column-text>
+				<a class="modify-link" data-rowId="<%= role.getRoleId() %>" href="javascript:;"><%= removeRoleIcon %></a>
+			</liferay-ui:search-container-column-text>
+		</c:if>
+	</liferay-ui:search-container-row>
+
+	<liferay-ui:search-iterator paginate="<%= false %>" />
+</liferay-ui:search-container>
+
+<liferay-ui:icon
+	cssClass="modify-link"
+	iconCssClass="icon-search"
+	id="selectRegularRoleLink"
+	label="<%= true %>"
+	linkCssClass="btn"
+	message="select"
+	method="get"
+	url="javascript:;"
+/>
+
+<aui:script use="aui-base">
+	A.one('#<portlet:namespace />selectRegularRoleLink').on(
+		'click',
+		function(event) {
+			Liferay.Util.selectEntity(
+				{
+					dialog: {
+						constrain: true,
+						modal: true,
+						width: 600
+					},
+					id: '<portlet:namespace />selectRegularRole',
+					title: '<liferay-ui:message arguments="regular-role" key="select-x" />',
+					uri: '<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/html/backend/quanly_nguoidung/select_regular_role.jsp" /><portlet:param name="p_u_i_d" value='<%= (selUser == null) ? "0" : String.valueOf(selUser.getUserId()) %>' /></portlet:renderURL>'
+				},
+				function(event) {
+					<portlet:namespace />selectRole(event.roleid, event.roletitle, event.searchcontainername, event.groupdescriptivename, event.groupid);
+				}
+			);
+		}
+	);
+</aui:script>

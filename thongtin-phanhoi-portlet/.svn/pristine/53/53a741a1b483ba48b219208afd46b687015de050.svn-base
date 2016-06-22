@@ -1,0 +1,438 @@
+/**
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package vn.dtt.ns.thongtinphanhoi.dao.model;
+
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.ModelWrapper;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * <p>
+ * This class is a wrapper for {@link ThongTinPhanHoi}.
+ * </p>
+ *
+ * @author tubq
+ * @see ThongTinPhanHoi
+ * @generated
+ */
+public class ThongTinPhanHoiWrapper implements ThongTinPhanHoi,
+	ModelWrapper<ThongTinPhanHoi> {
+	public ThongTinPhanHoiWrapper(ThongTinPhanHoi thongTinPhanHoi) {
+		_thongTinPhanHoi = thongTinPhanHoi;
+	}
+
+	@Override
+	public Class<?> getModelClass() {
+		return ThongTinPhanHoi.class;
+	}
+
+	@Override
+	public String getModelClassName() {
+		return ThongTinPhanHoi.class.getName();
+	}
+
+	@Override
+	public Map<String, Object> getModelAttributes() {
+		Map<String, Object> attributes = new HashMap<String, Object>();
+
+		attributes.put("id", getId());
+		attributes.put("soDienThoai", getSoDienThoai());
+		attributes.put("thoiGianGoi", getThoiGianGoi());
+		attributes.put("trangThaiGiaoDich", getTrangThaiGiaoDich());
+		attributes.put("tongDai", getTongDai());
+		attributes.put("maTinh", getMaTinh());
+		attributes.put("maHuyen", getMaHuyen());
+		attributes.put("maXa", getMaXa());
+
+		return attributes;
+	}
+
+	@Override
+	public void setModelAttributes(Map<String, Object> attributes) {
+		Long id = (Long)attributes.get("id");
+
+		if (id != null) {
+			setId(id);
+		}
+
+		String soDienThoai = (String)attributes.get("soDienThoai");
+
+		if (soDienThoai != null) {
+			setSoDienThoai(soDienThoai);
+		}
+
+		Date thoiGianGoi = (Date)attributes.get("thoiGianGoi");
+
+		if (thoiGianGoi != null) {
+			setThoiGianGoi(thoiGianGoi);
+		}
+
+		Integer trangThaiGiaoDich = (Integer)attributes.get("trangThaiGiaoDich");
+
+		if (trangThaiGiaoDich != null) {
+			setTrangThaiGiaoDich(trangThaiGiaoDich);
+		}
+
+		Integer tongDai = (Integer)attributes.get("tongDai");
+
+		if (tongDai != null) {
+			setTongDai(tongDai);
+		}
+
+		String maTinh = (String)attributes.get("maTinh");
+
+		if (maTinh != null) {
+			setMaTinh(maTinh);
+		}
+
+		String maHuyen = (String)attributes.get("maHuyen");
+
+		if (maHuyen != null) {
+			setMaHuyen(maHuyen);
+		}
+
+		String maXa = (String)attributes.get("maXa");
+
+		if (maXa != null) {
+			setMaXa(maXa);
+		}
+	}
+
+	/**
+	* Returns the primary key of this thong tin phan hoi.
+	*
+	* @return the primary key of this thong tin phan hoi
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _thongTinPhanHoi.getPrimaryKey();
+	}
+
+	/**
+	* Sets the primary key of this thong tin phan hoi.
+	*
+	* @param primaryKey the primary key of this thong tin phan hoi
+	*/
+	@Override
+	public void setPrimaryKey(long primaryKey) {
+		_thongTinPhanHoi.setPrimaryKey(primaryKey);
+	}
+
+	/**
+	* Returns the ID of this thong tin phan hoi.
+	*
+	* @return the ID of this thong tin phan hoi
+	*/
+	@Override
+	public long getId() {
+		return _thongTinPhanHoi.getId();
+	}
+
+	/**
+	* Sets the ID of this thong tin phan hoi.
+	*
+	* @param id the ID of this thong tin phan hoi
+	*/
+	@Override
+	public void setId(long id) {
+		_thongTinPhanHoi.setId(id);
+	}
+
+	/**
+	* Returns the so dien thoai of this thong tin phan hoi.
+	*
+	* @return the so dien thoai of this thong tin phan hoi
+	*/
+	@Override
+	public java.lang.String getSoDienThoai() {
+		return _thongTinPhanHoi.getSoDienThoai();
+	}
+
+	/**
+	* Sets the so dien thoai of this thong tin phan hoi.
+	*
+	* @param soDienThoai the so dien thoai of this thong tin phan hoi
+	*/
+	@Override
+	public void setSoDienThoai(java.lang.String soDienThoai) {
+		_thongTinPhanHoi.setSoDienThoai(soDienThoai);
+	}
+
+	/**
+	* Returns the thoi gian goi of this thong tin phan hoi.
+	*
+	* @return the thoi gian goi of this thong tin phan hoi
+	*/
+	@Override
+	public java.util.Date getThoiGianGoi() {
+		return _thongTinPhanHoi.getThoiGianGoi();
+	}
+
+	/**
+	* Sets the thoi gian goi of this thong tin phan hoi.
+	*
+	* @param thoiGianGoi the thoi gian goi of this thong tin phan hoi
+	*/
+	@Override
+	public void setThoiGianGoi(java.util.Date thoiGianGoi) {
+		_thongTinPhanHoi.setThoiGianGoi(thoiGianGoi);
+	}
+
+	/**
+	* Returns the trang thai giao dich of this thong tin phan hoi.
+	*
+	* @return the trang thai giao dich of this thong tin phan hoi
+	*/
+	@Override
+	public int getTrangThaiGiaoDich() {
+		return _thongTinPhanHoi.getTrangThaiGiaoDich();
+	}
+
+	/**
+	* Sets the trang thai giao dich of this thong tin phan hoi.
+	*
+	* @param trangThaiGiaoDich the trang thai giao dich of this thong tin phan hoi
+	*/
+	@Override
+	public void setTrangThaiGiaoDich(int trangThaiGiaoDich) {
+		_thongTinPhanHoi.setTrangThaiGiaoDich(trangThaiGiaoDich);
+	}
+
+	/**
+	* Returns the tong dai of this thong tin phan hoi.
+	*
+	* @return the tong dai of this thong tin phan hoi
+	*/
+	@Override
+	public int getTongDai() {
+		return _thongTinPhanHoi.getTongDai();
+	}
+
+	/**
+	* Sets the tong dai of this thong tin phan hoi.
+	*
+	* @param tongDai the tong dai of this thong tin phan hoi
+	*/
+	@Override
+	public void setTongDai(int tongDai) {
+		_thongTinPhanHoi.setTongDai(tongDai);
+	}
+
+	/**
+	* Returns the ma tinh of this thong tin phan hoi.
+	*
+	* @return the ma tinh of this thong tin phan hoi
+	*/
+	@Override
+	public java.lang.String getMaTinh() {
+		return _thongTinPhanHoi.getMaTinh();
+	}
+
+	/**
+	* Sets the ma tinh of this thong tin phan hoi.
+	*
+	* @param maTinh the ma tinh of this thong tin phan hoi
+	*/
+	@Override
+	public void setMaTinh(java.lang.String maTinh) {
+		_thongTinPhanHoi.setMaTinh(maTinh);
+	}
+
+	/**
+	* Returns the ma huyen of this thong tin phan hoi.
+	*
+	* @return the ma huyen of this thong tin phan hoi
+	*/
+	@Override
+	public java.lang.String getMaHuyen() {
+		return _thongTinPhanHoi.getMaHuyen();
+	}
+
+	/**
+	* Sets the ma huyen of this thong tin phan hoi.
+	*
+	* @param maHuyen the ma huyen of this thong tin phan hoi
+	*/
+	@Override
+	public void setMaHuyen(java.lang.String maHuyen) {
+		_thongTinPhanHoi.setMaHuyen(maHuyen);
+	}
+
+	/**
+	* Returns the ma xa of this thong tin phan hoi.
+	*
+	* @return the ma xa of this thong tin phan hoi
+	*/
+	@Override
+	public java.lang.String getMaXa() {
+		return _thongTinPhanHoi.getMaXa();
+	}
+
+	/**
+	* Sets the ma xa of this thong tin phan hoi.
+	*
+	* @param maXa the ma xa of this thong tin phan hoi
+	*/
+	@Override
+	public void setMaXa(java.lang.String maXa) {
+		_thongTinPhanHoi.setMaXa(maXa);
+	}
+
+	@Override
+	public boolean isNew() {
+		return _thongTinPhanHoi.isNew();
+	}
+
+	@Override
+	public void setNew(boolean n) {
+		_thongTinPhanHoi.setNew(n);
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _thongTinPhanHoi.isCachedModel();
+	}
+
+	@Override
+	public void setCachedModel(boolean cachedModel) {
+		_thongTinPhanHoi.setCachedModel(cachedModel);
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _thongTinPhanHoi.isEscapedModel();
+	}
+
+	@Override
+	public java.io.Serializable getPrimaryKeyObj() {
+		return _thongTinPhanHoi.getPrimaryKeyObj();
+	}
+
+	@Override
+	public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
+		_thongTinPhanHoi.setPrimaryKeyObj(primaryKeyObj);
+	}
+
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
+		return _thongTinPhanHoi.getExpandoBridge();
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.model.BaseModel<?> baseModel) {
+		_thongTinPhanHoi.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		_thongTinPhanHoi.setExpandoBridgeAttributes(expandoBridge);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.service.ServiceContext serviceContext) {
+		_thongTinPhanHoi.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new ThongTinPhanHoiWrapper((ThongTinPhanHoi)_thongTinPhanHoi.clone());
+	}
+
+	@Override
+	public int compareTo(ThongTinPhanHoi thongTinPhanHoi) {
+		return _thongTinPhanHoi.compareTo(thongTinPhanHoi);
+	}
+
+	@Override
+	public int hashCode() {
+		return _thongTinPhanHoi.hashCode();
+	}
+
+	@Override
+	public com.liferay.portal.model.CacheModel<ThongTinPhanHoi> toCacheModel() {
+		return _thongTinPhanHoi.toCacheModel();
+	}
+
+	@Override
+	public ThongTinPhanHoi toEscapedModel() {
+		return new ThongTinPhanHoiWrapper(_thongTinPhanHoi.toEscapedModel());
+	}
+
+	@Override
+	public ThongTinPhanHoi toUnescapedModel() {
+		return new ThongTinPhanHoiWrapper(_thongTinPhanHoi.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _thongTinPhanHoi.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _thongTinPhanHoi.toXmlString();
+	}
+
+	@Override
+	public void persist()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_thongTinPhanHoi.persist();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof ThongTinPhanHoiWrapper)) {
+			return false;
+		}
+
+		ThongTinPhanHoiWrapper thongTinPhanHoiWrapper = (ThongTinPhanHoiWrapper)obj;
+
+		if (Validator.equals(_thongTinPhanHoi,
+					thongTinPhanHoiWrapper._thongTinPhanHoi)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
+	 */
+	public ThongTinPhanHoi getWrappedThongTinPhanHoi() {
+		return _thongTinPhanHoi;
+	}
+
+	@Override
+	public ThongTinPhanHoi getWrappedModel() {
+		return _thongTinPhanHoi;
+	}
+
+	@Override
+	public void resetOriginalValues() {
+		_thongTinPhanHoi.resetOriginalValues();
+	}
+
+	private ThongTinPhanHoi _thongTinPhanHoi;
+}

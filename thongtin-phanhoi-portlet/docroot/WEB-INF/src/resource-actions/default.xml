@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE resource-action-mapping PUBLIC "-//Liferay//DTD Resource Action Mapping 6.1.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_6_1_0.dtd">
+
+<resource-action-mapping>
+	<portlet-resource>
+		<portlet-name>yeu-cau-giai-trinh</portlet-name>
+		<permissions>
+			<supports>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>ACCESS_IN_CONTROL_PANEL</action-key>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults>
+				<action-key>VIEW</action-key>
+			</site-member-defaults>
+			<guest-defaults />
+			<guest-unsupported>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>ACCESS_IN_CONTROL_PANEL</action-key>
+				<action-key>CONFIGURATION</action-key>
+			</guest-unsupported>
+		</permissions>
+	</portlet-resource>
+	<model-resource>
+		<model-name>vn.dtt.ns.yeucaugiaitrinh.dao.model.YeuCauGiaiTrinh</model-name>
+		<portlet-ref>
+			<portlet-name>yeu-cau-giai-trinh</portlet-name>
+		</portlet-ref>
+		<permissions>
+			<supports>
+				<action-key>TAO_YCGT</action-key>
+				<action-key>YEUCAU_GIAITRINH</action-key>
+				<action-key>GUI_GIAITRINH</action-key>
+				<action-key>YEUCAU_GIAITRINHLAI</action-key>
+				<action-key>USER_TINH_GIAITRINH</action-key>
+				<action-key>CHUYEN_SANG_MINHBACH</action-key>				
+				<action-key>DUYET</action-key>
+				<action-key>HUY</action-key>
+			</supports>
+			<site-member-defaults />
+			<guest-defaults>
+			</guest-defaults>
+			<guest-unsupported>
+				<action-key>TAO_YCGT</action-key>
+				<action-key>YEUCAU_GIAITRINH</action-key>
+				<action-key>GUI_GIAITRINH</action-key>
+				<action-key>YEUCAU_GIAITRINHLAI</action-key>
+				<action-key>USER_TINH_GIAITRINH</action-key>
+				<action-key>CHUYEN_SANG_MINHBACH</action-key>					
+				<action-key>DUYET</action-key>
+				<action-key>HUY</action-key>
+				<action-key>PERMISSIONS</action-key>
+			</guest-unsupported>
+		</permissions>
+	</model-resource>
+</resource-action-mapping>

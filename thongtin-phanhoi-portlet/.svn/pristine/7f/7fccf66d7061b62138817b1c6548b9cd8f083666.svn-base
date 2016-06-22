@@ -1,0 +1,11 @@
+vn.dtt.thongkephanhoi.backend.label.thongke=Thống kê phản hồi
+vn.dtt.thongkephanhoi.backend.label.tinhthanhpho=Tỉnh/Thành phố
+vn.dtt.thongkephanhoi.backend.label.select.tinhthanhpho=--- Chọn Tỉnh/Thành phố ---
+vn.dtt.thongkephanhoi.backend.label.selectmonth=Tháng/Năm
+vn.dtt.thongkephanhoi.backend.button.search=Tìm kiếm
+vn.dtt.thongkephanhoi.backend.label.stt=STT
+vn.dtt.thongkephanhoi.backend.label.chude=Chủ đề
+vn.dtt.thongkephanhoi.backend.label.sophanhoi=Số phản hồi
+vn.dtt.thongkephanhoi.backend.label.sophanhoidataoycgt=Số phản hồi đã tạo Y/c giải trình
+vn.dtt.thongkephanhoi.backend.label.sophanhoichuataoycgt=Số phản hồi chưa tạo Y/c giải trình
+vn.dtt.thongkephanhoi.backend.button.exportdoc=Xuất Word

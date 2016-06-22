@@ -1,0 +1,13 @@
+vn.dtt.thongkephanhoi.backend.label.thongke=Th?ng k\u00EA ph?n h?i
+vn.dtt.thongkephanhoi.backend.label.tinhthanhpho=T?nh/Th\u00E0nh ph?
+vn.dtt.thongkephanhoi.backend.label.select.tinhthanhpho=--- Ch?n T?nh/Th\u00E0nh ph? ---
+vn.dtt.thongkephanhoi.backend.label.selectmonth=Th\u00E1ng/N?m
+vn.dtt.thongkephanhoi.backend.button.search=T\u00ECm ki?m
+vn.dtt.thongkephanhoi.backend.label.stt=STT
+vn.dtt.thongkephanhoi.backend.label.chude=Chủ đề
+vn.dtt.thongkephanhoi.backend.label.sophanhoi=Số phản hồi
+vn.dtt.thongkephanhoi.backend.label.sophanhoidataoycgt=S? ph?n h?i ?\u00E3 t?o Y/c gi?i tr\u00ECnh
+vn.dtt.thongkephanhoi.backend.label.sophanhoichuataoycgt=S? ph?n h?i ch?a t?o Y/c gi?i tr\u00ECnh
+vn.dtt.thongkephanhoi.backend.button.exportdoc=Xuất Word
+vn.dtt.thongkephanhoi.backend.button.chuyensangmb=Chuyển sang minh bạch
+vn.dtt.thongkephanhoi.transfer2mb.label.successmessage=Chuyển sang trang Minh Bạch thành công !

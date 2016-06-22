@@ -1,0 +1,250 @@
+<?xml version="1.0"?>
+
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd">
+	<persistence-unit-metadata>
+		<xml-mapping-metadata-complete/>
+		<persistence-unit-defaults>
+			<access>PROPERTY</access>
+		</persistence-unit-defaults>
+	</persistence-unit-metadata>
+	<mapped-superclass class="vn.dtt.ns.thongtinphanhoi.dao.model.impl.ChiTietThongTinPhanHoiModelImpl">
+		<attributes>
+			<id name="id" />
+			<basic name="thongTinPhanHoiId">
+				<column name="THONGTIN_PHANHOI_ID" />
+			</basic>
+			<basic name="maTramCapNuoc">
+				<column name="MATRAMCAPNUOC" />
+			</basic>
+			<basic name="noiDungKhacNuoc">
+				<column name="NOIDUNGKHAC_NUOC" />
+			</basic>
+			<basic name="noiDungKhacVeSinh">
+				<column name="NOIDUNGKHAC_VESINH" />
+			</basic>
+			<basic name="maThongTinPhanAnh">
+				<column name="MATHONGTINPHANANH" />
+			</basic>
+			<basic name="yeuCauGiaiTrinhId">
+				<column name="YEUCAU_GIAITRINH_ID" />
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="vn.dtt.ns.thongtinphanhoi.dao.model.impl.ThongTinPhanHoiModelImpl">
+		<attributes>
+			<id name="id" />
+			<basic name="soDienThoai">
+				<column name="SODIENTHOAI" />
+			</basic>
+			<basic name="thoiGianGoi">
+				<column name="THOIGIANGOI" />
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="trangThaiGiaoDich">
+				<column name="TRANGTHAI_GIAODICH" />
+			</basic>
+			<basic name="tongDai">
+				<column name="TONGDAI" />
+			</basic>
+			<basic name="maTinh">
+				<column name="MATINH" />
+			</basic>
+			<basic name="maHuyen">
+				<column name="MAHUYEN" />
+			</basic>
+			<basic name="maXa">
+				<column name="MAXA" />
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="vn.dtt.ns.thongtinphanhoi.dao.model.impl.TopicDetailsModelImpl">
+		<attributes>
+			<id name="id" />
+			<basic name="soDienThoai">
+				<column name="SODIENTHOAI" />
+			</basic>
+			<basic name="thoiGianGoi">
+				<column name="THOIGIANGOI" />
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="tongDai">
+				<column name="TONGDAI" />
+			</basic>
+			<basic name="maTinh">
+				<column name="MATINH" />
+			</basic>
+			<basic name="maHuyen">
+				<column name="MAHUYEN" />
+			</basic>
+			<basic name="maXa">
+				<column name="MAXA" />
+			</basic>
+			<basic name="maTramCapNuoc">
+				<column name="MATRAMCAPNUOC" />
+			</basic>
+			<basic name="maThongTinPhanAnh">
+				<column name="MATHONGTINPHANANH" />
+			</basic>
+			<basic name="noiDungKhacNuoc">
+				<column name="NOIDUNGKHAC_NUOC" />
+			</basic>
+			<basic name="noiDungKhacVesinh">
+				<column name="NOIDUNGKHAC_VESINH" />
+			</basic>
+			<basic name="yeuCauGiaiTrinhId">
+				<column name="YEUCAU_GIAITRINH_ID" />
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="vn.dtt.ns.thongtinphanhoi.dao.model.impl.TopicPhanHoiModelImpl">
+		<attributes>
+			<id name="topicCode">
+				<column name="CODE" />
+			</id>
+			<basic name="maTinh">
+				<column name="MATINH" />
+			</basic>
+			<basic name="maHuyen">
+				<column name="MAHUYEN" />
+			</basic>
+			<basic name="maXa">
+				<column name="MAXA" />
+			</basic>
+			<basic name="topicName">
+				<column name="NAME" />
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="vn.dtt.ns.yeucaugiaitrinh.dao.model.impl.ChiTietYeuCauGiaiTrinhModelImpl">
+		<attributes>
+			<id name="id" />
+			<basic name="yeuCauGiaiTrinhId">
+				<column name="YEUCAU_GIAITRINH_ID" />
+			</basic>
+			<basic name="maThongTinPhanAnh">
+				<column name="MATHONGTINPHANANH" />
+			</basic>
+			<basic name="soLuong">
+				<column name="SOLUONG" />
+			</basic>
+			<basic name="giaiTrinh">
+				<column name="GIAITRINH" />
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="vn.dtt.ns.yeucaugiaitrinh.dao.model.impl.TrangThaiGiaiTrinhModelImpl">
+		<attributes>
+			<id name="id" />
+			<basic name="yeuCauGiaiTrinhId">
+				<column name="YEUCAU_GIAITRINH_ID" />
+			</basic>
+			<basic name="trangThai">
+				<column name="TRANGTHAI" />
+			</basic>
+			<basic name="ghiChuNguoiLap">
+				<column name="GHICHU_NGUOITAO" />
+			</basic>
+			<basic name="userId" />
+			<basic name="ngayTao">
+				<column name="NGAYTAO" />
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="ngayCapNhat">
+				<column name="NGAYCAPNHAT" />
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="ghiChuNguoiDuyet">
+				<column name="GHICHU_NGUOIDUYET" />
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="vn.dtt.ns.yeucaugiaitrinh.dao.model.impl.YeuCauGiaiTrinhModelImpl">
+		<attributes>
+			<id name="id" />
+			<basic name="maTinh">
+				<column name="MATINH" />
+			</basic>
+			<basic name="maHuyen">
+				<column name="MAHUYEN" />
+			</basic>
+			<basic name="maXa">
+				<column name="MAXA" />
+			</basic>
+			<basic name="maChuDe">
+				<column name="MACHUDE" />
+			</basic>
+			<basic name="trangThai">
+				<column name="TRANGTHAI" />
+			</basic>
+			<basic name="soLuongTheoChuDe">
+				<column name="SOLUONG_THEOCHUDE" />
+			</basic>
+			<basic name="userId" />
+			<basic name="ngayTao">
+				<column name="NGAYTAO" />
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="ngayCapNhat">
+				<column name="NGAYCAPNHAT" />
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="nguoiPheDuyet">
+				<column name="NGUOIPHEDUYET" />
+			</basic>
+			<basic name="daChuyenSangMinhBach">
+				<column name="DA_CHUYENSANG_MINHBACH" />
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<entity class="vn.dtt.ns.thongtinphanhoi.dao.model.impl.ChiTietThongTinPhanHoiImpl" name="ChiTietThongTinPhanHoi">
+		<table name="ws_chitiet_thongtin_phanhoi" />
+		<attributes />
+	</entity>
+	<entity class="vn.dtt.ns.thongtinphanhoi.dao.model.impl.ThongTinPhanHoiImpl" name="ThongTinPhanHoi">
+		<table name="ws_thongtin_phanhoi" />
+		<attributes />
+	</entity>
+	<entity class="vn.dtt.ns.thongtinphanhoi.dao.model.impl.TopicDetailsImpl" name="TopicDetails">
+		<table name="thongtinphanhoi_TopicDetails" />
+		<attributes />
+	</entity>
+	<entity class="vn.dtt.ns.thongtinphanhoi.dao.model.impl.TopicPhanHoiImpl" name="TopicPhanHoi">
+		<table name="thongtinphanhoi_TopicPhanHoi" />
+		<attributes />
+	</entity>
+	<entity class="vn.dtt.ns.yeucaugiaitrinh.dao.model.impl.ChiTietYeuCauGiaiTrinhImpl" name="ChiTietYeuCauGiaiTrinh">
+		<table name="ws_chitiet_yeucau_giaitrinh" />
+		<attributes />
+	</entity>
+	<entity class="vn.dtt.ns.yeucaugiaitrinh.dao.model.impl.TrangThaiGiaiTrinhImpl" name="TrangThaiGiaiTrinh">
+		<table name="ws_trangthai_giaitrinh" />
+		<attributes />
+	</entity>
+	<entity class="vn.dtt.ns.yeucaugiaitrinh.dao.model.impl.YeuCauGiaiTrinhImpl" name="YeuCauGiaiTrinh">
+		<table name="ws_yeucau_giaitrinh" />
+		<attributes />
+	</entity>
+</entity-mappings>

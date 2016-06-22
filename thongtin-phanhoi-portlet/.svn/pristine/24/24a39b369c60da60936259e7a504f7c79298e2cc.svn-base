@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false" auto-import="false">
+	<import class="vn.dtt.ns.thongtinphanhoi.dao.model.ChiTietThongTinPhanHoi" />
+	<import class="vn.dtt.ns.thongtinphanhoi.dao.model.ThongTinPhanHoi" />
+	<class name="vn.dtt.ns.thongtinphanhoi.dao.model.impl.ChiTietThongTinPhanHoiImpl" table="ws_chitiet_thongtin_phanhoi">
+		<cache usage="read-write" />
+		<id name="id" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="thongTinPhanHoiId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="thongtin_phanhoi_id" />
+		<property name="maThongTinPhanAnh" type="com.liferay.portal.dao.orm.hibernate.StringType" column="mathongtinphananh" />
+	</class>
+	<class name="vn.dtt.ns.thongtinphanhoi.dao.model.impl.ThongTinPhanHoiImpl" table="ws_thongtin_phanhoi">
+		<cache usage="read-write" />
+		<id name="id" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="soDienThoai" type="com.liferay.portal.dao.orm.hibernate.StringType" column="sodienthoai" />
+		<property name="thoiGianGoi" type="org.hibernate.type.TimestampType" column="thoigiangoi" />
+		<property name="trangThaiGiaoDich" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="trangthai_giaodich" />
+		<property name="tongDai" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="tongdai" />
+		<property name="loaiGiaoDichPhanHoi" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="loai_giaodich_phanhoi" />
+		<property name="maTinh" type="com.liferay.portal.dao.orm.hibernate.StringType" column="matinh" />
+		<property name="maHuyen" type="com.liferay.portal.dao.orm.hibernate.StringType" column="mahuyen" />
+		<property name="maXa" type="com.liferay.portal.dao.orm.hibernate.StringType" column="maxa" />
+		<property name="maTramCapNuoc" type="com.liferay.portal.dao.orm.hibernate.StringType" column="matramcapnuoc" />
+	</class>
+</hibernate-mapping>

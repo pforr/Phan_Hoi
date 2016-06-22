@@ -1,0 +1,5 @@
+type1: cho người đăng nhập là Admin hoặc cấp Trung ương
+type2: cho người đăng nhập là cấp tỉnh
+
+Với các trường hợp còn lại, cấp huyện và cấp trạm khi đăng nhập không cần from search 
+chỉ tìm kiếm theo tên người.

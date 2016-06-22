@@ -1,0 +1,80 @@
+.col-small {
+	width: 150px;
+}
+
+.bnt-add-entry {
+	padding: 10px 0px;
+}
+
+.header-user {
+	padding: 10px;
+	border: 1px solid #cbcbcb;
+	margin: 5px 0px;
+	margin-top: 25px;
+	font-weight: bold;
+	background-color: #378FE6;
+	color: #fff;
+	text-transform: uppercase;
+}
+
+.col-1 .col-2 {
+	width: 50%;
+}
+
+.add-user-tramcap-wrapper table {
+	width: 100%;
+}
+
+.required {
+	display: none;
+}
+
+.header-um {
+	padding: 10px 0px;
+	font-weight: bold;
+}
+
+input.input-50 {
+	width: 205px !important;
+}
+
+.selected-huyen table {
+	width: 100%;
+}
+
+.selected-huyen td {
+	padding: 5px;
+	border: 1px solid #cbcbcb;
+}
+
+td.col-action {
+	width: 50px;
+	text-align: center;
+}
+
+.sel-xa {
+	display: inline-block;
+	width: 150px;
+	overflow: hidden;
+	max-width: 150px;
+	/* max-height: 26px; */
+	height: 30px;
+}
+
+.wrapper-0 {
+	width: 100%;
+}
+
+.wrapper-1 {
+	width: 50%;
+	display: inline-block;
+}
+
+.dia-ban-table table {
+	width: 100%;
+}
+
+.dia-ban-table td {
+	padding: 5px;
+	border: 1px solid #cbcbcb;
+}

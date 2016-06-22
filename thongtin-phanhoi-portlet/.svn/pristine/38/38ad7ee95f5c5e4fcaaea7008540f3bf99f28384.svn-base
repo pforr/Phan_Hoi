@@ -1,0 +1,212 @@
+package vn.dtt.ns.yeucaugiaitrinh;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletConfig;
+import javax.servlet.http.HttpServletResponse;
+
+import vn.dtt.cmon.dm.dao.model.DATAITEM;
+import vn.dtt.ns.thongtinphanhoi.dao.model.TopicDetails;
+import vn.dtt.ns.thongtinphanhoi.dao.service.ChiTietThongTinPhanHoiLocalServiceUtil;
+import vn.dtt.ns.thongtinphanhoi.util.DiaBanQuanLyUtils;
+import vn.dtt.ns.thongtinphanhoi.util.ThongTinPhanHoiConstants;
+import vn.dtt.ns.yeucaugiaitrinh.dao.model.ChiTietYeuCauGiaiTrinh;
+import vn.dtt.ns.yeucaugiaitrinh.dao.model.TrangThaiGiaiTrinh;
+import vn.dtt.ns.yeucaugiaitrinh.dao.model.YeuCauGiaiTrinh;
+import vn.dtt.ns.yeucaugiaitrinh.dao.service.ChiTietYeuCauGiaiTrinhLocalServiceUtil;
+import vn.dtt.ns.yeucaugiaitrinh.dao.service.TrangThaiGiaiTrinhLocalServiceUtil;
+import vn.dtt.ns.yeucaugiaitrinh.dao.service.YeuCauGiaiTrinhLocalServiceUtil;
+
+import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.servlet.ServletResponseUtil;
+import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.model.User;
+import com.liferay.portal.util.PortalUtil;
+import com.liferay.util.bridges.mvc.MVCPortlet;
+
+/**
+ * Portlet implementation class YeuCauGiaiTrinhAction
+ */
+public class YeuCauGiaiTrinhAction extends MVCPortlet {
+ 
+	public void search(ActionRequest actionRequest, ActionResponse actionResponse) throws Exception {
+		int actionMode = ParamUtil.getInteger(actionRequest, "actionMode", ThongTinPhanHoiConstants.ActionMode.LUU);
+		String maTinh = ParamUtil.getString(actionRequest, "selectMaTinh");
+		String maHuyen = ParamUtil.getString(actionRequest, "selectMaHuyen");
+		String maXa = ParamUtil.getString(actionRequest, "selectMaXa");
+		String maChuDe = ParamUtil.getString(actionRequest, "selectMaChuDe");
+		int trangThai = ParamUtil.getInteger(actionRequest, "trangThai");
+		String strFromDate = ParamUtil.getString(actionRequest, "fromDate");
+		String strToDate = ParamUtil.getString(actionRequest, "toDate");
+		
+		setSearchParameter(actionRequest, actionResponse);
+		
+		actionResponse.setRenderParameter("maTinh", maTinh);
+		actionResponse.setRenderParameter("actionMode", String.valueOf(actionMode));
+		actionResponse.setRenderParameter("maHuyen", maHuyen);
+		actionResponse.setRenderParameter("maXa", maXa);
+		actionResponse.setRenderParameter("maChuDe", maChuDe);
+		actionResponse.setRenderParameter("trangThai", String.valueOf(trangThai));
+		actionResponse.setRenderParameter("fromDate", strFromDate);
+		actionResponse.setRenderParameter("toDate", strToDate);
+		
+		PortletConfig portletConfig = (PortletConfig) actionRequest.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+		SessionMessages.add(actionRequest, portletConfig.getPortletName() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
+		SessionMessages.add(actionRequest, portletConfig.getPortletName() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_SUCCESS_MESSAGE);
+	}
+	
+	private void setSearchParameter(ActionRequest actionRequest,
+			ActionResponse actionResponse) {
+
+		String cur = ParamUtil.getString(actionRequest, "cur");
+		if (!StringPool.BLANK.equals(cur)) {
+			actionResponse.setRenderParameter("cur",
+					ParamUtil.getString(actionRequest, "cur"));
+		}
+		String delta = ParamUtil.getString(actionRequest, "delta");
+		if (!StringPool.BLANK.equals(delta)) {
+			actionResponse.setRenderParameter("delta",
+					ParamUtil.getString(actionRequest, "delta"));
+		}
+	}
+	
+	public void updateYeuCauGiaiTrinh(ActionRequest actionRequest, ActionResponse actionResponse) throws SystemException, PortalException{
+		long ycgtId = ParamUtil.getLong(actionRequest, "ycgtId", 0);
+		Integer actionMode = ParamUtil.getInteger(actionRequest, "actionMode");
+		long nguoiPheDuyetId = ParamUtil.getLong(actionRequest, "nguoiPheDuyet", 0);
+		String ghiChuNguoiTao = ParamUtil.getString(actionRequest, "ghiChuNguoiTao", "");
+		String ghiChuNguoiDuyet = ParamUtil.getString(actionRequest, "ghiChuNguoiDuyet", "");
+		
+		if(ycgtId > 0 && actionMode != null){		
+			Date currentDate = new Date();
+			
+			YeuCauGiaiTrinh ycgt = YeuCauGiaiTrinhLocalServiceUtil.getYeuCauGiaiTrinh(ycgtId);
+			ycgt.setNgayCapNhat(currentDate);
+			if(actionMode == ThongTinPhanHoiConstants.ActionMode.DONG_YCGT){
+				ycgt.setNguoiPheDuyet(nguoiPheDuyetId);
+			}
+			
+			if(actionMode == ThongTinPhanHoiConstants.ActionMode.GUI_GT){
+				List<TopicDetails> lstTopicDetails = ChiTietThongTinPhanHoiLocalServiceUtil.getTopicDetailsByYcgtId(ycgtId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);					
+				for (TopicDetails topicDetails : lstTopicDetails) {					
+					String maThongTinPhanAnh = topicDetails.getMaThongTinPhanAnh();
+					String giaiTrinh = ParamUtil.getString(actionRequest, "giaiTrinh"+topicDetails.getId(), "");
+					int soLuong = ParamUtil.getInteger(actionRequest, "soLuong"+topicDetails.getId(), 0);
+					
+					ChiTietYeuCauGiaiTrinh existChiTietYcgt = ChiTietYeuCauGiaiTrinhLocalServiceUtil.getChiTietGiaiTrinhByYcgtIdAndMaThongTinPhanAnh(ycgtId, maThongTinPhanAnh);
+					if(existChiTietYcgt != null){
+						existChiTietYcgt.setGiaiTrinh(giaiTrinh);
+						ChiTietYeuCauGiaiTrinhLocalServiceUtil.updateChiTietYeuCauGiaiTrinh(existChiTietYcgt);
+					}else{
+						if(!StringPool.BLANK.equals(giaiTrinh)){
+							long chiTietYcgtPk = CounterLocalServiceUtil.increment(ChiTietYeuCauGiaiTrinh.class.getName());
+							ChiTietYeuCauGiaiTrinh chiTietYcgt = ChiTietYeuCauGiaiTrinhLocalServiceUtil.createChiTietYeuCauGiaiTrinh(chiTietYcgtPk);
+							
+							chiTietYcgt.setYeuCauGiaiTrinhId(ycgtId);
+							chiTietYcgt.setMaThongTinPhanAnh(maThongTinPhanAnh);
+							chiTietYcgt.setGiaiTrinh(giaiTrinh);
+							chiTietYcgt.setSoLuong(soLuong);
+							
+							ChiTietYeuCauGiaiTrinhLocalServiceUtil.addChiTietYeuCauGiaiTrinh(chiTietYcgt);
+						}
+					}
+					
+				}				
+			}
+			YeuCauGiaiTrinhLocalServiceUtil.updateYeuCauGiaiTrinh(ycgt);
+				
+			long trangThaiGiaiTrinhPk = CounterLocalServiceUtil.increment(TrangThaiGiaiTrinh.class.getName());			
+			TrangThaiGiaiTrinh trangThaiGiaiTrinh = TrangThaiGiaiTrinhLocalServiceUtil.createTrangThaiGiaiTrinh(trangThaiGiaiTrinhPk);
+			
+			
+			trangThaiGiaiTrinh.setYeuCauGiaiTrinhId(ycgtId);
+			trangThaiGiaiTrinh.setNgayTao(currentDate);
+			trangThaiGiaiTrinh.setTrangThai(actionMode);			
+			trangThaiGiaiTrinh.setGhiChuNguoiDuyet(ghiChuNguoiDuyet);
+			trangThaiGiaiTrinh.setGhiChuNguoiLap(ghiChuNguoiTao);
+			trangThaiGiaiTrinh.setUserId(nguoiPheDuyetId);
+
+			TrangThaiGiaiTrinhLocalServiceUtil.addTrangThaiGiaiTrinh(trangThaiGiaiTrinh);
+		}	
+		
+		PortletConfig portletConfig = (PortletConfig) actionRequest.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+		SessionMessages.add(actionRequest, portletConfig.getPortletName() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
+		SessionMessages.add(actionRequest, portletConfig.getPortletName() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_SUCCESS_MESSAGE);
+	}	
+	
+	public void findQuanHuyenByMaTinh(ActionRequest actionRequest, ActionResponse actionResponse) throws NumberFormatException, Exception {		
+		String maTinh = ParamUtil.getString(actionRequest, "maTinh");
+		User user = PortalUtil.getUser(actionRequest);
+		boolean isSupperAdmin = actionRequest.isUserInRole("Administrator");
+		
+		JSONObject jsonFeed = JSONFactoryUtil.createJSONObject();
+		JSONArray _name = JSONFactoryUtil.getJSONFactory().createJSONArray();
+		JSONArray _id = JSONFactoryUtil.getJSONFactory().createJSONArray();
+	
+		List<DATAITEM> listQuanHuyen = DiaBanQuanLyUtils.getHuyen(user, maTinh, 0l,
+				isSupperAdmin, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+		
+		if (listQuanHuyen == null) {
+			listQuanHuyen = new ArrayList<DATAITEM>();
+		}
+		
+		for (DATAITEM item : listQuanHuyen) {			
+			_id.put(item.getNode2());
+			_name.put(item.getName());			
+		}
+		
+		jsonFeed.put("id", _id);
+		jsonFeed.put("name", _name);
+	
+		
+		HttpServletResponse resourceResponse = PortalUtil.getHttpServletResponse(actionResponse);		
+		resourceResponse.setContentType(ContentTypes.APPLICATION_JSON);
+		resourceResponse.setCharacterEncoding("UTF-8");
+		ServletResponseUtil.write(resourceResponse, jsonFeed.toString());
+	}
+	
+	public void findXaPhuongByTinhHuyen(ActionRequest actionRequest, ActionResponse actionResponse) throws NumberFormatException, Exception {		
+		String maTinh = ParamUtil.getString(actionRequest, "maTinh");
+		String maHuyen = ParamUtil.getString(actionRequest, "maHuyen");
+		User user = PortalUtil.getUser(actionRequest);
+		boolean isSupperAdmin = actionRequest.isUserInRole("Administrator");
+		
+		JSONObject jsonFeed = JSONFactoryUtil.createJSONObject();
+		JSONArray _name = JSONFactoryUtil.getJSONFactory().createJSONArray();
+		JSONArray _id = JSONFactoryUtil.getJSONFactory().createJSONArray();
+	
+		List<DATAITEM> listXaPhuong = DiaBanQuanLyUtils.getXa(user, maTinh, maHuyen, 0l, isSupperAdmin, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+		
+		if (listXaPhuong == null) {
+			listXaPhuong = new ArrayList<DATAITEM>();
+		}
+		
+		for (DATAITEM item : listXaPhuong) {			
+			_id.put(item.getNode2());
+			_name.put(item.getName());			
+		}
+		
+		jsonFeed.put("id", _id);
+		jsonFeed.put("name", _name);
+	
+		
+		HttpServletResponse resourceResponse = PortalUtil.getHttpServletResponse(actionResponse);		
+		resourceResponse.setContentType(ContentTypes.APPLICATION_JSON);
+		resourceResponse.setCharacterEncoding("UTF-8");
+		ServletResponseUtil.write(resourceResponse, jsonFeed.toString());
+	}
+}

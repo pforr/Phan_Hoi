@@ -1,0 +1,409 @@
+<%@page import="vn.dtt.cmon.user.dao.model.UserHuyen"%>
+<%@page import="vn.dtt.cmon.user.dao.service.UserHuyenLocalServiceUtil"%>
+<%@page import="vn.dtt.ns.thongtinphanhoi.util.DiaBanQuanLyUtils"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="javax.portlet.WindowState"%>
+<%@page import="javax.portlet.PortletMode"%>
+<%@page import="com.sun.mail.handlers.message_rfc822"%>
+<%@page import="com.liferay.portal.kernel.language.LanguageUtil"%>
+<%@page import="com.liferay.portal.service.UserLocalServiceUtil"%>
+<%@page import="vn.dtt.ns.thongtinphanhoi.util.DateTimeUtil"%>
+<%@page import="vn.dtt.ns.thongtinphanhoi.util.ThongTinPhanHoiConstants"%>
+<%@page import="vn.dtt.ns.yeucaugiaitrinh.dao.service.YeuCauGiaiTrinhLocalServiceUtil"%>
+<%@page import="vn.dtt.ns.yeucaugiaitrinh.dao.model.YeuCauGiaiTrinh"%>
+<%@page import="vn.dtt.ns.thongtinphanhoi.business.DataItemBusiness"%>
+<%@page import="vn.dtt.cmon.dm.dao.service.DATAITEMLocalServiceUtil"%>
+<%@page import="vn.dtt.cmon.dm.dao.model.DATAITEM"%>
+<%@page import="vn.dtt.ns.thongtinphanhoi.util.WebKeys"%>
+<%@page import="java.util.Date"%>
+<%@page import="vn.dtt.ns.thongtinphanhoi.util.DauNoiNuocConstantString"%>
+<%@page import="vn.dtt.ns.thongtinphanhoi.business.UserMappingBusiness"%>
+<%@page import="vn.dtt.cmon.user.dao.model.UserMapping"%>
+<%@page import="vn.dtt.ns.yeucaugiaitrinh.dao.service.TrangThaiGiaiTrinhLocalServiceUtil"%>
+<%@page import="vn.dtt.ns.yeucaugiaitrinh.dao.model.TrangThaiGiaiTrinh"%>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ include file="/html/init.jsp" %>
+<style type="text/css">	
+	a:hover{		
+		font-weight: bold;
+	}
+</style>
+
+<%
+int cur =  Integer.valueOf(preferences.getValue("curYC", "1"));
+int delta =  Integer.valueOf(preferences.getValue("deltaYC", "10"));
+int curnext = ParamUtil.getInteger(renderRequest, "cur", 1);
+int deltanext = ParamUtil.getInteger(renderRequest, "delta", 10);
+
+if(curnext != cur) {
+	cur = curnext;
+}
+if(deltanext != delta) {
+	delta = deltanext;
+}
+
+String maTinh = ParamUtil.getString(request, "maTinh", "");
+String maHuyen = ParamUtil.getString(request, "maHuyen", "");
+String maXa = ParamUtil.getString(request, "maXa", "");
+String maChuDe = ParamUtil.getString(request, "maChuDe", "");
+String strFromDate = ParamUtil.getString(request, "fromDate", "");
+String strToDate = ParamUtil.getString(request, "toDate", "");
+
+Date currentDate = new Date();
+Calendar calendar = Calendar.getInstance();
+calendar.set(Calendar.DATE, 1);
+calendar.add(Calendar.MONTH, -1);
+Date firstDateOfPrevMonth = calendar.getTime();
+
+Date fromDate = StringPool.BLANK.equals(strFromDate)? firstDateOfPrevMonth: sdf.parse(strFromDate);
+Date toDate  = StringPool.BLANK.equals(strToDate)? currentDate: sdf.parse(strToDate);
+
+List<DATAITEM> listTinh = DATAITEMLocalServiceUtil.getByDataGroupLevel1(1, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+List<DATAITEM> listHuyen = new ArrayList<DATAITEM>();
+List<DATAITEM> listXa = new ArrayList<DATAITEM>();
+
+
+
+UserMapping userMapping =  UserMappingBusiness.getUserMapping(user);
+boolean isSupperAdmin = request.isUserInRole("Administrator");
+
+if(DauNoiNuocConstantString.UserMapping.USER_TINH == userMapping.getUserType()
+	||DauNoiNuocConstantString.UserMapping.USER_GT_NUOC == userMapping.getUserType() 
+	|| DauNoiNuocConstantString.UserMapping.USER_GT_VS == userMapping.getUserType()){
+	maTinh = userMapping.getOrgCode1();
+}
+
+if(DauNoiNuocConstantString.UserMapping.USER_GT_NUOC == userMapping.getUserType() || DauNoiNuocConstantString.UserMapping.USER_GT_VS == userMapping.getUserType()){
+	if(!StringPool.BLANK.equals(maTinh)){	
+		listHuyen =  DATAITEMLocalServiceUtil.findHuyenChonByUser(maTinh, userMapping.getUserId(),  QueryUtil.ALL_POS, QueryUtil.ALL_POS);	 	
+		//listHuyen =  DiaBanQuanLyUtils.findHuyenChonByUser(maTinh, userMapping.getUserId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+	}	
+}else{
+	if(!StringPool.BLANK.equals(maTinh)){	
+		listHuyen = DataItemBusiness.getInLevel2(WebKeys.DATAGROUPID_DONVIHANHCHINH, maTinh);
+	}	
+}
+
+if(!StringPool.BLANK.equals(maHuyen)){
+	listXa = DataItemBusiness.getInLevel3(WebKeys.DATAGROUPID_DONVIHANHCHINH, maTinh, maHuyen);
+	//listXa = DiaBanQuanLyUtils.getXa(user, maTinh, maHuyen, 0l, isSupperAdmin, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+}
+
+int soLuotPhanHoi = ParamUtil.getInteger(request, "soLuotPhanHoi", 0);
+int trangThaiGiaiTrinh = ParamUtil.getInteger(request, "trangThaiGiaiTrinh", 0);
+
+List<DATAITEM> listChuDe = new ArrayList<DATAITEM>();
+listChuDe = DATAITEMLocalServiceUtil.getDATAITEMByDataGroupIdAndLevel(9, 1);
+
+PortletURL pagingURL = renderResponse.createRenderURL();
+pagingURL.setParameter("jspPage", "/html/backend/yeucau_giaitrinh/ds_yeucau_giaitrinh.jsp");
+pagingURL.setParameter("maTinh", maTinh);
+pagingURL.setParameter("maHuyen", maHuyen);
+pagingURL.setParameter("maXa", maXa);
+pagingURL.setParameter("maChuDe", maChuDe);
+pagingURL.setParameter("backURL", themeDisplay.getURLCurrent());
+pagingURL.setParameter("fromDate", sdf.format(fromDate));
+pagingURL.setParameter("toDate", sdf.format(toDate));
+pagingURL.setParameter("delta", String.valueOf(delta));
+
+SearchContainer searchContainer = new SearchContainer(renderRequest, null,
+		null, SearchContainer.DEFAULT_CUR_PARAM,
+		cur, delta, pagingURL, null, null);
+
+int start = searchContainer.getStart();
+int end = searchContainer.getEnd();
+
+List<YeuCauGiaiTrinh> listYeuCauGiaiTrinh = new ArrayList<YeuCauGiaiTrinh>();
+Long total = 0L;
+total = YeuCauGiaiTrinhLocalServiceUtil.countYeuCauGiaiTrinh(maTinh, maHuyen, maXa, trangThaiGiaiTrinh, maChuDe, soLuotPhanHoi, fromDate, toDate);
+if(total > 0){
+	listYeuCauGiaiTrinh = YeuCauGiaiTrinhLocalServiceUtil.searchYeuCauGiaiTrinh(maTinh, maHuyen, maXa, trangThaiGiaiTrinh, maChuDe,  soLuotPhanHoi, fromDate, toDate, start, end);
+}
+
+searchContainer.setTotal(total.intValue());
+searchContainer.setResults(listYeuCauGiaiTrinh);
+
+PortletURL searchURL = renderResponse.createActionURL();
+searchURL.setParameter(ActionRequest.ACTION_NAME, "search");
+%>
+<div style="width:100%;">	
+	<div>
+		<h3 style="text-align: center;"><liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.danhsachycgt" /></h3>
+		<aui:form name="frmSearchYcgt" id="frmSearchYcgt" method="post" action="<%=searchURL.toString() %>">
+			<aui:input type="hidden" name="actionMode" id="actionMode"/>
+			<table  style="width:100%">						
+				<tr>
+				<c:if test="<%=userMapping.getUserType() == DauNoiNuocConstantString.UserMapping.CAP_TU %>">											
+					<td  style="width:15%">		
+						<aui:select name="selectMaTinh" id="selectMaTinh" label="vn.dtt.yeucaugiaitrinh.backend.label.tinhthanhpho">		
+							<aui:option><liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.select.matinh"/></aui:option>
+							<%
+								for(DATAITEM item: listTinh){
+							%>
+								<aui:option value="<%= item.getNode1() %>" selected="<%= item.getNode1().equals(maTinh) %>"><%= item.getName() %></aui:option>
+							<%
+								}
+							%>
+						</aui:select>					
+					</td>
+					</c:if> 
+					<td  style="width:15%">
+						<aui:select name="selectMaHuyen" id="selectMaHuyen" label="vn.dtt.yeucaugiaitrinh.backend.label.quanhuyen">							
+							<aui:option><liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.select.mahuyen"/></aui:option>
+							<%
+								for(DATAITEM huyen: listHuyen){
+							%>
+								<aui:option value="<%= huyen.getNode2() %>" selected="<%= huyen.getNode2().equals(maHuyen)%>"><%= huyen.getName() %></aui:option>
+							<%
+								}
+							%>
+						</aui:select>
+					
+					</td>
+					
+					<td  style="width:15%">
+						<aui:select name="selectMaXa" id="selectMaXa" label="vn.dtt.yeucaugiaitrinh.backend.label.xaphuong">							
+							<aui:option><liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.select.maxa"/></aui:option>						
+							<%
+								for(DATAITEM xa: listXa){
+							%>
+								<aui:option value="<%= xa.getNode3() %>" selected="<%= xa.getNode3().equals(maXa)%>"><%= xa.getName() %></aui:option>
+							<%
+								}
+							%>
+						</aui:select>
+					
+					</td>
+					
+					<td  style="width:25%">
+						<aui:select name="selectMaChuDe" id="selectMaChuDe" label="vn.dtt.yeucaugiaitrinh.backend.label.chude">
+							<aui:option><liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.select.chude"/></aui:option>
+							<%
+								for(DATAITEM chude: listChuDe){
+							%>
+								<aui:option value="<%= chude.getCode() %>" selected="<%= chude.getCode().equals(maChuDe)%>"><%= chude.getName() %></aui:option>
+							<%
+								}
+							%>
+						</aui:select>
+					</td>					
+				</tr>
+				<tr>
+					<td  style="width:25%">
+						<aui:select name="trangThaiGiaiTrinh" id="trangThaiGiaiTrinh" label="vn.dtt.yeucaugiaitrinh.backend.label.trangthaigiaitrinh">
+							<aui:option>
+								<liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.select.trangthaigiaitrinh"/>
+							</aui:option>
+							<aui:option value="<%=ThongTinPhanHoiConstants.TrangThaiGiaiTrinh.DA_TAO_YCGT %>" selected="<%=trangThaiGiaiTrinh == ThongTinPhanHoiConstants.TrangThaiGiaiTrinh.DA_TAO_YCGT %>">
+								<liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.trangthaigiaitrinh.dataoycgt"/>
+							</aui:option>
+							<aui:option value="<%=ThongTinPhanHoiConstants.TrangThaiGiaiTrinh.DANG_XU_LY %>" selected="<%=trangThaiGiaiTrinh == ThongTinPhanHoiConstants.TrangThaiGiaiTrinh.DANG_XU_LY %>">
+								<liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.trangthaigiaitrinh.dangxuly"/>
+							</aui:option>
+							<aui:option value="<%=ThongTinPhanHoiConstants.TrangThaiGiaiTrinh.DA_DUOC_GIAI_TRINH %>" selected="<%=trangThaiGiaiTrinh == ThongTinPhanHoiConstants.TrangThaiGiaiTrinh.DA_DUOC_GIAI_TRINH%>">
+								<liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.trangthaigiaitrinh.daduocgiaitrinh"/>
+							</aui:option>
+							<aui:option value="<%=ThongTinPhanHoiConstants.TrangThaiGiaiTrinh.HUY %>" selected="<%=trangThaiGiaiTrinh == ThongTinPhanHoiConstants.TrangThaiGiaiTrinh.HUY%>">
+								<liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.trangthaigiaitrinh.huy"/>
+							</aui:option>
+						</aui:select>
+					</td>
+					<td>
+						<aui:input type="text" name="soLuotPhanHoi" value="<%=soLuotPhanHoi %>" label="vn.dtt.yeucaugiaitrinh.backend.label.soluotphanhoi" />
+					</td>
+					<td style="width:10%">
+						<aui:input type="text" name="fromDate" label="vn.dtt.yeucaugiaitrinh.backend.label.tungay" value="<%=sdf.format(fromDate) %>" />
+					</td>
+					<td style="width:10%">
+						<aui:input type="text" name="toDate" label="vn.dtt.yeucaugiaitrinh.backend.label.denngay"  value="<%=sdf.format(toDate) %>"/>
+					</td>					
+				</tr>
+				<tr>
+					<td>
+						<aui:button type="submit" name="btnSearch" id="btnSearch" value="vn.dtt.yeucaugiaitrinh.backend.button.search"/>
+					</td>
+				</tr>
+			</table>				
+		</aui:form>
+		
+		<table class="table table-bordered table-hover table-striped" style="width:100%;">	
+			<thead class="table-columns">
+				<tr>
+					<th><liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.stt" /></th>
+					<th><liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.tinhthanhpho" /></th>
+					<th><liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.quanhuyen" /></th>
+					<th><liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.xaphuong" /></th>
+					<th><liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.chude" /></th>
+					<th><liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.sophananh" /></th>
+					<th><liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.ngaytao" /></th>
+					<th><liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.nguoitao" /></th>
+					<th><liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.trangthai" /></th>
+					<%-- <th><liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.nguoiduyet" /></th> --%>					
+				</tr>
+			</thead>
+			
+			<%
+				if(listYeuCauGiaiTrinh != null){
+					int index = 1;
+					for(YeuCauGiaiTrinh ycgt : listYeuCauGiaiTrinh){
+						DATAITEM itemTinh = DATAITEMLocalServiceUtil.getDataItem(1, 1, ycgt.getMaTinh());						
+						DATAITEM itemHuyen = DATAITEMLocalServiceUtil.getDataItem(1, 2, ycgt.getMaHuyen());
+						DATAITEM itemXa = DATAITEMLocalServiceUtil.getDataItem(1, 3, ycgt.getMaXa());
+						DATAITEM topic = DATAITEMLocalServiceUtil.getDataItem(9, 1, ycgt.getMaChuDe());
+						long idNguoiTao = ycgt.getUserId();
+						long idNguoiPheDuyet = ycgt.getNguoiPheDuyet();
+						
+						PortletURL viewYcgtDetailsUrl = renderResponse.createRenderURL();
+						viewYcgtDetailsUrl.setParameter("jspPage", "/html/backend/yeucau_giaitrinh/chitiet_yeucau_giaitrinh.jsp");
+						viewYcgtDetailsUrl.setParameter("ycgtId", String.valueOf(ycgt.getId()));
+						viewYcgtDetailsUrl.setParameter("topicName", topic.getName());						
+						viewYcgtDetailsUrl.setParameter("soLuotPhanHoi", String.valueOf(soLuotPhanHoi));
+						viewYcgtDetailsUrl.setParameter("backURL", themeDisplay.getURLCurrent());
+						viewYcgtDetailsUrl.setParameter("topicCode", ycgt.getMaChuDe());	
+						viewYcgtDetailsUrl.setParameter("fromDate", sdf.format(fromDate));
+						viewYcgtDetailsUrl.setParameter("toDate", sdf.format(toDate));
+						viewYcgtDetailsUrl.setParameter("maTinh", ycgt.getMaTinh());
+						viewYcgtDetailsUrl.setParameter("maHuyen", ycgt.getMaHuyen());
+						viewYcgtDetailsUrl.setParameter("maXa", ycgt.getMaXa());
+						viewYcgtDetailsUrl.setParameter("topicName", topic.getName());
+						viewYcgtDetailsUrl.setParameter("soPhanHoi", String.valueOf(ycgt.getSoLuongTheoChuDe()));
+						
+						TrangThaiGiaiTrinh trangThaiYcgt = TrangThaiGiaiTrinhLocalServiceUtil.getTrangThaiGiaiTrinhByYcgtId(ycgt.getId());
+						Integer trangThai = trangThaiYcgt.getTrangThai();	
+						String strTrangThai = trangThai == ThongTinPhanHoiConstants.ActionMode.LUU ? LanguageUtil.get(pageContext, "vn.dtt.yeucaugiaitrinh.backend.label.trangthaigiaitrinh.dataoycgt") :
+							 (trangThai == ThongTinPhanHoiConstants.ActionMode.DONG_YCGT ? LanguageUtil.get(pageContext, "vn.dtt.yeucaugiaitrinh.backend.label.trangthaigiaitrinh.daduocgiaitrinh") :
+							 (trangThai == ThongTinPhanHoiConstants.ActionMode.HUY_YCGT ? LanguageUtil.get(pageContext, "vn.dtt.yeucaugiaitrinh.backend.label.trangthaigiaitrinh.huy") :
+							 (trangThai == ThongTinPhanHoiConstants.ActionMode.GUI_DUYET || trangThai == ThongTinPhanHoiConstants.ActionMode.GUI_GT
+							  || trangThai == ThongTinPhanHoiConstants.ActionMode.YEUCAU_GIAITRINHLAI || trangThai == ThongTinPhanHoiConstants.ActionMode.USER_TINH_GT? LanguageUtil.get(pageContext, "vn.dtt.yeucaugiaitrinh.backend.label.trangthaigiaitrinh.dangxuly") : StringPool.BLANK)));
+												
+			%>
+			<tr>
+				<td style="text-align: center;"><%=(searchContainer.getStart() +  (index++))%></td>
+				<td style="text-align: center;"><%=itemTinh != null ? itemTinh.getName() : StringPool.BLANK %></td>
+				<td style="text-align: center;"><%=itemHuyen != null ? itemHuyen.getName() : StringPool.BLANK %></td>
+				<td style="text-align: center;"><%=itemXa != null ? itemXa.getName() : StringPool.BLANK %></td>
+				<td style="text-align: center;"><a href="<%=viewYcgtDetailsUrl.toString()%>"><%=topic != null ? topic.getName() : StringPool.BLANK %></a></td>
+				<td style="text-align: center;"><a href="<%=viewYcgtDetailsUrl.toString()%>"><%=ycgt.getSoLuongTheoChuDe() %></a></td>
+				<td style="text-align: center;"><%=DateTimeUtil.formatDate(ycgt.getNgayTao()) %></td>
+				<td style="text-align: center;"><%=Validator.isNotNull(idNguoiTao) && idNguoiTao > 0 ? UserLocalServiceUtil.getUser(ycgt.getUserId()).getFullName() : StringPool.BLANK%></td>
+				<td style="text-align: center;"><%= strTrangThai%></td>
+				<%-- <td style="text-align: center;"><%= Validator.isNotNull(idNguoiPheDuyet) && idNguoiPheDuyet > 0 ? UserLocalServiceUtil.getUser(idNguoiPheDuyet).getFullName() : StringPool.BLANK %></td> --%>
+			</tr>
+			
+			<%
+					}
+				}
+			%>
+		</table>
+		<%
+			if(searchContainer != null){
+		%>		
+				<div class="tongso"><div id = "pagination"><liferay-ui:search-paginator searchContainer="<%= searchContainer %>" /></div></div>
+		<%				
+			}
+		%>
+	</div>	
+</div>
+
+<portlet:actionURL var="findQuanHuyenByMaTinh" name="findQuanHuyenByMaTinh"/>
+<portlet:actionURL var="findXaPhuongByTinhHuyen" name="findXaPhuongByTinhHuyen"/>
+<script type="text/javascript">
+	var findQuanHuyenUrl = '<%=findQuanHuyenByMaTinh.toString()%>';		
+	
+	$('#<portlet:namespace/>selectMaTinh').change(function(event) {				
+		var matinh = $("select#<portlet:namespace/>selectMaTinh").val();		
+		if (matinh == "")
+			return;
+				
+		$.ajax({
+			type : 'GET',				
+			url : findQuanHuyenUrl,	
+			dataType: 'json',							
+			data :{
+				<portlet:namespace/>maTinh : matinh,
+				<portlet:namespace/>userType : <%=userMapping.getUserType()%>
+			},
+			success : function(data) {							
+				//console.log("=== data: " + data);
+			    var select = $('#<portlet:namespace/>selectMaHuyen');
+				select.find('option').remove();
+				var selectQuanHuyen = '<liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.select.mahuyen" />';
+							
+				$('<option>').val('').text(selectQuanHuyen).appendTo(select);				
+				for ( var i = 0; i < data.id.length; i++) { 
+					$('<option>').val(data.id[i]).text(data.name[i]).appendTo(select);					
+				}				
+			}
+		});
+	});		
+	
+	var findXaPhuongUrl = '<%=findXaPhuongByTinhHuyen.toString()%>';
+	$('#<portlet:namespace/>selectMaHuyen').change(function(event) {		
+		var matinh = $("select#<portlet:namespace/>selectMaTinh").val();
+		if(matinh == undefined)
+			matinh = '<%=maTinh%>';	
+					
+		var mahuyen = $("select#<portlet:namespace/>selectMaHuyen").val();		
+		if (mahuyen == "")
+			return;
+				
+		$.ajax({
+			type : 'GET',				
+			url : findXaPhuongUrl,	
+			dataType: 'json',							
+			data :{
+				<portlet:namespace/>maTinh : matinh,
+				<portlet:namespace/>maHuyen : mahuyen,
+				<portlet:namespace/>userType : <%=userMapping.getUserType()%>
+			},
+			success : function(data) {							
+				//console.log("=== data: " + data);
+			    var select = $('#<portlet:namespace/>selectMaXa');
+				select.find('option').remove();
+				var selectXaPhuong = '<liferay-ui:message key="vn.dtt.yeucaugiaitrinh.backend.label.select.maxa" />';
+							
+				$('<option>').val('').text(selectXaPhuong).appendTo(select);				
+				for ( var i = 0; i < data.id.length; i++) { 
+					$('<option>').val(data.id[i]).text(data.name[i]).appendTo(select);					
+				}				
+			}
+		});
+	});	
+	
+
+	AUI().use('aui-datepicker',function(A) {
+	     new A.DatePicker(
+	      {
+	        trigger: '#<portlet:namespace />fromDate',
+	        mask: '%d/%m/%Y',
+	        popover: {
+	          zIndex: 1
+	        },
+	        on: {
+	          selectionChange: function(event) {
+	            console.log(event.newSelection)
+	          }
+	        }
+	      }
+	    );
+
+	    new A.DatePicker(
+ 	      {
+ 	        trigger: '#<portlet:namespace />toDate',
+ 	        mask: '%d/%m/%Y',
+ 	        popover: {
+ 	          zIndex: 1
+ 	        },
+ 	        on: {
+ 	          selectionChange: function(event) {
+ 	            console.log(event.newSelection)
+ 	          }
+ 	        }
+ 	      }
+ 	    ); 
+	});
+</script>

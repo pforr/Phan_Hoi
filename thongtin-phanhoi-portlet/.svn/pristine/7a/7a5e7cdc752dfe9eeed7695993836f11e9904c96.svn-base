@@ -1,0 +1,552 @@
+/**
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package vn.dtt.ns.yeucaugiaitrinh.dao.model;
+
+import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.model.BaseModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.util.PortalUtil;
+
+import vn.dtt.ns.yeucaugiaitrinh.dao.service.ClpSerializer;
+import vn.dtt.ns.yeucaugiaitrinh.dao.service.TrangThaiGiaiTrinhLocalServiceUtil;
+
+import java.io.Serializable;
+
+import java.lang.reflect.Method;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author tubq
+ */
+public class TrangThaiGiaiTrinhClp extends BaseModelImpl<TrangThaiGiaiTrinh>
+	implements TrangThaiGiaiTrinh {
+	public TrangThaiGiaiTrinhClp() {
+	}
+
+	@Override
+	public Class<?> getModelClass() {
+		return TrangThaiGiaiTrinh.class;
+	}
+
+	@Override
+	public String getModelClassName() {
+		return TrangThaiGiaiTrinh.class.getName();
+	}
+
+	@Override
+	public long getPrimaryKey() {
+		return _id;
+	}
+
+	@Override
+	public void setPrimaryKey(long primaryKey) {
+		setId(primaryKey);
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _id;
+	}
+
+	@Override
+	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
+		setPrimaryKey(((Long)primaryKeyObj).longValue());
+	}
+
+	@Override
+	public Map<String, Object> getModelAttributes() {
+		Map<String, Object> attributes = new HashMap<String, Object>();
+
+		attributes.put("id", getId());
+		attributes.put("yeuCauGiaiTrinhId", getYeuCauGiaiTrinhId());
+		attributes.put("trangThai", getTrangThai());
+		attributes.put("ghiChuNguoiLap", getGhiChuNguoiLap());
+		attributes.put("userId", getUserId());
+		attributes.put("ngayTao", getNgayTao());
+		attributes.put("ngayCapNhat", getNgayCapNhat());
+		attributes.put("ghiChuNguoiDuyet", getGhiChuNguoiDuyet());
+
+		return attributes;
+	}
+
+	@Override
+	public void setModelAttributes(Map<String, Object> attributes) {
+		Long id = (Long)attributes.get("id");
+
+		if (id != null) {
+			setId(id);
+		}
+
+		Long yeuCauGiaiTrinhId = (Long)attributes.get("yeuCauGiaiTrinhId");
+
+		if (yeuCauGiaiTrinhId != null) {
+			setYeuCauGiaiTrinhId(yeuCauGiaiTrinhId);
+		}
+
+		Integer trangThai = (Integer)attributes.get("trangThai");
+
+		if (trangThai != null) {
+			setTrangThai(trangThai);
+		}
+
+		String ghiChuNguoiLap = (String)attributes.get("ghiChuNguoiLap");
+
+		if (ghiChuNguoiLap != null) {
+			setGhiChuNguoiLap(ghiChuNguoiLap);
+		}
+
+		Long userId = (Long)attributes.get("userId");
+
+		if (userId != null) {
+			setUserId(userId);
+		}
+
+		Date ngayTao = (Date)attributes.get("ngayTao");
+
+		if (ngayTao != null) {
+			setNgayTao(ngayTao);
+		}
+
+		Date ngayCapNhat = (Date)attributes.get("ngayCapNhat");
+
+		if (ngayCapNhat != null) {
+			setNgayCapNhat(ngayCapNhat);
+		}
+
+		String ghiChuNguoiDuyet = (String)attributes.get("ghiChuNguoiDuyet");
+
+		if (ghiChuNguoiDuyet != null) {
+			setGhiChuNguoiDuyet(ghiChuNguoiDuyet);
+		}
+	}
+
+	@Override
+	public long getId() {
+		return _id;
+	}
+
+	@Override
+	public void setId(long id) {
+		_id = id;
+
+		if (_trangThaiGiaiTrinhRemoteModel != null) {
+			try {
+				Class<?> clazz = _trangThaiGiaiTrinhRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setId", long.class);
+
+				method.invoke(_trangThaiGiaiTrinhRemoteModel, id);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public long getYeuCauGiaiTrinhId() {
+		return _yeuCauGiaiTrinhId;
+	}
+
+	@Override
+	public void setYeuCauGiaiTrinhId(long yeuCauGiaiTrinhId) {
+		_yeuCauGiaiTrinhId = yeuCauGiaiTrinhId;
+
+		if (_trangThaiGiaiTrinhRemoteModel != null) {
+			try {
+				Class<?> clazz = _trangThaiGiaiTrinhRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setYeuCauGiaiTrinhId",
+						long.class);
+
+				method.invoke(_trangThaiGiaiTrinhRemoteModel, yeuCauGiaiTrinhId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public int getTrangThai() {
+		return _trangThai;
+	}
+
+	@Override
+	public void setTrangThai(int trangThai) {
+		_trangThai = trangThai;
+
+		if (_trangThaiGiaiTrinhRemoteModel != null) {
+			try {
+				Class<?> clazz = _trangThaiGiaiTrinhRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setTrangThai", int.class);
+
+				method.invoke(_trangThaiGiaiTrinhRemoteModel, trangThai);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public String getGhiChuNguoiLap() {
+		return _ghiChuNguoiLap;
+	}
+
+	@Override
+	public void setGhiChuNguoiLap(String ghiChuNguoiLap) {
+		_ghiChuNguoiLap = ghiChuNguoiLap;
+
+		if (_trangThaiGiaiTrinhRemoteModel != null) {
+			try {
+				Class<?> clazz = _trangThaiGiaiTrinhRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setGhiChuNguoiLap",
+						String.class);
+
+				method.invoke(_trangThaiGiaiTrinhRemoteModel, ghiChuNguoiLap);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public long getUserId() {
+		return _userId;
+	}
+
+	@Override
+	public void setUserId(long userId) {
+		_userId = userId;
+
+		if (_trangThaiGiaiTrinhRemoteModel != null) {
+			try {
+				Class<?> clazz = _trangThaiGiaiTrinhRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setUserId", long.class);
+
+				method.invoke(_trangThaiGiaiTrinhRemoteModel, userId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public String getUserUuid() throws SystemException {
+		return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+	}
+
+	@Override
+	public void setUserUuid(String userUuid) {
+		_userUuid = userUuid;
+	}
+
+	@Override
+	public Date getNgayTao() {
+		return _ngayTao;
+	}
+
+	@Override
+	public void setNgayTao(Date ngayTao) {
+		_ngayTao = ngayTao;
+
+		if (_trangThaiGiaiTrinhRemoteModel != null) {
+			try {
+				Class<?> clazz = _trangThaiGiaiTrinhRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setNgayTao", Date.class);
+
+				method.invoke(_trangThaiGiaiTrinhRemoteModel, ngayTao);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public Date getNgayCapNhat() {
+		return _ngayCapNhat;
+	}
+
+	@Override
+	public void setNgayCapNhat(Date ngayCapNhat) {
+		_ngayCapNhat = ngayCapNhat;
+
+		if (_trangThaiGiaiTrinhRemoteModel != null) {
+			try {
+				Class<?> clazz = _trangThaiGiaiTrinhRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setNgayCapNhat", Date.class);
+
+				method.invoke(_trangThaiGiaiTrinhRemoteModel, ngayCapNhat);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public String getGhiChuNguoiDuyet() {
+		return _ghiChuNguoiDuyet;
+	}
+
+	@Override
+	public void setGhiChuNguoiDuyet(String ghiChuNguoiDuyet) {
+		_ghiChuNguoiDuyet = ghiChuNguoiDuyet;
+
+		if (_trangThaiGiaiTrinhRemoteModel != null) {
+			try {
+				Class<?> clazz = _trangThaiGiaiTrinhRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setGhiChuNguoiDuyet",
+						String.class);
+
+				method.invoke(_trangThaiGiaiTrinhRemoteModel, ghiChuNguoiDuyet);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	public BaseModel<?> getTrangThaiGiaiTrinhRemoteModel() {
+		return _trangThaiGiaiTrinhRemoteModel;
+	}
+
+	public void setTrangThaiGiaiTrinhRemoteModel(
+		BaseModel<?> trangThaiGiaiTrinhRemoteModel) {
+		_trangThaiGiaiTrinhRemoteModel = trangThaiGiaiTrinhRemoteModel;
+	}
+
+	public Object invokeOnRemoteModel(String methodName,
+		Class<?>[] parameterTypes, Object[] parameterValues)
+		throws Exception {
+		Object[] remoteParameterValues = new Object[parameterValues.length];
+
+		for (int i = 0; i < parameterValues.length; i++) {
+			if (parameterValues[i] != null) {
+				remoteParameterValues[i] = ClpSerializer.translateInput(parameterValues[i]);
+			}
+		}
+
+		Class<?> remoteModelClass = _trangThaiGiaiTrinhRemoteModel.getClass();
+
+		ClassLoader remoteModelClassLoader = remoteModelClass.getClassLoader();
+
+		Class<?>[] remoteParameterTypes = new Class[parameterTypes.length];
+
+		for (int i = 0; i < parameterTypes.length; i++) {
+			if (parameterTypes[i].isPrimitive()) {
+				remoteParameterTypes[i] = parameterTypes[i];
+			}
+			else {
+				String parameterTypeName = parameterTypes[i].getName();
+
+				remoteParameterTypes[i] = remoteModelClassLoader.loadClass(parameterTypeName);
+			}
+		}
+
+		Method method = remoteModelClass.getMethod(methodName,
+				remoteParameterTypes);
+
+		Object returnValue = method.invoke(_trangThaiGiaiTrinhRemoteModel,
+				remoteParameterValues);
+
+		if (returnValue != null) {
+			returnValue = ClpSerializer.translateOutput(returnValue);
+		}
+
+		return returnValue;
+	}
+
+	@Override
+	public void persist() throws SystemException {
+		if (this.isNew()) {
+			TrangThaiGiaiTrinhLocalServiceUtil.addTrangThaiGiaiTrinh(this);
+		}
+		else {
+			TrangThaiGiaiTrinhLocalServiceUtil.updateTrangThaiGiaiTrinh(this);
+		}
+	}
+
+	@Override
+	public TrangThaiGiaiTrinh toEscapedModel() {
+		return (TrangThaiGiaiTrinh)ProxyUtil.newProxyInstance(TrangThaiGiaiTrinh.class.getClassLoader(),
+			new Class[] { TrangThaiGiaiTrinh.class },
+			new AutoEscapeBeanHandler(this));
+	}
+
+	@Override
+	public Object clone() {
+		TrangThaiGiaiTrinhClp clone = new TrangThaiGiaiTrinhClp();
+
+		clone.setId(getId());
+		clone.setYeuCauGiaiTrinhId(getYeuCauGiaiTrinhId());
+		clone.setTrangThai(getTrangThai());
+		clone.setGhiChuNguoiLap(getGhiChuNguoiLap());
+		clone.setUserId(getUserId());
+		clone.setNgayTao(getNgayTao());
+		clone.setNgayCapNhat(getNgayCapNhat());
+		clone.setGhiChuNguoiDuyet(getGhiChuNguoiDuyet());
+
+		return clone;
+	}
+
+	@Override
+	public int compareTo(TrangThaiGiaiTrinh trangThaiGiaiTrinh) {
+		int value = 0;
+
+		if (getId() < trangThaiGiaiTrinh.getId()) {
+			value = -1;
+		}
+		else if (getId() > trangThaiGiaiTrinh.getId()) {
+			value = 1;
+		}
+		else {
+			value = 0;
+		}
+
+		value = value * -1;
+
+		if (value != 0) {
+			return value;
+		}
+
+		return 0;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof TrangThaiGiaiTrinhClp)) {
+			return false;
+		}
+
+		TrangThaiGiaiTrinhClp trangThaiGiaiTrinh = (TrangThaiGiaiTrinhClp)obj;
+
+		long primaryKey = trangThaiGiaiTrinh.getPrimaryKey();
+
+		if (getPrimaryKey() == primaryKey) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public String toString() {
+		StringBundler sb = new StringBundler(17);
+
+		sb.append("{id=");
+		sb.append(getId());
+		sb.append(", yeuCauGiaiTrinhId=");
+		sb.append(getYeuCauGiaiTrinhId());
+		sb.append(", trangThai=");
+		sb.append(getTrangThai());
+		sb.append(", ghiChuNguoiLap=");
+		sb.append(getGhiChuNguoiLap());
+		sb.append(", userId=");
+		sb.append(getUserId());
+		sb.append(", ngayTao=");
+		sb.append(getNgayTao());
+		sb.append(", ngayCapNhat=");
+		sb.append(getNgayCapNhat());
+		sb.append(", ghiChuNguoiDuyet=");
+		sb.append(getGhiChuNguoiDuyet());
+		sb.append("}");
+
+		return sb.toString();
+	}
+
+	@Override
+	public String toXmlString() {
+		StringBundler sb = new StringBundler(28);
+
+		sb.append("<model><model-name>");
+		sb.append("vn.dtt.ns.yeucaugiaitrinh.dao.model.TrangThaiGiaiTrinh");
+		sb.append("</model-name>");
+
+		sb.append(
+			"<column><column-name>id</column-name><column-value><![CDATA[");
+		sb.append(getId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>yeuCauGiaiTrinhId</column-name><column-value><![CDATA[");
+		sb.append(getYeuCauGiaiTrinhId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>trangThai</column-name><column-value><![CDATA[");
+		sb.append(getTrangThai());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>ghiChuNguoiLap</column-name><column-value><![CDATA[");
+		sb.append(getGhiChuNguoiLap());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>userId</column-name><column-value><![CDATA[");
+		sb.append(getUserId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>ngayTao</column-name><column-value><![CDATA[");
+		sb.append(getNgayTao());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>ngayCapNhat</column-name><column-value><![CDATA[");
+		sb.append(getNgayCapNhat());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>ghiChuNguoiDuyet</column-name><column-value><![CDATA[");
+		sb.append(getGhiChuNguoiDuyet());
+		sb.append("]]></column-value></column>");
+
+		sb.append("</model>");
+
+		return sb.toString();
+	}
+
+	private long _id;
+	private long _yeuCauGiaiTrinhId;
+	private int _trangThai;
+	private String _ghiChuNguoiLap;
+	private long _userId;
+	private String _userUuid;
+	private Date _ngayTao;
+	private Date _ngayCapNhat;
+	private String _ghiChuNguoiDuyet;
+	private BaseModel<?> _trangThaiGiaiTrinhRemoteModel;
+}

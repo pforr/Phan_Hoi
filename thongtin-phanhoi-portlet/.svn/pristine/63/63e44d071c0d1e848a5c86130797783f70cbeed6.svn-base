@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" version="2.0">
+	
+	<portlet>
+		<portlet-name>thong-tin-phan-hoi-action</portlet-name>
+		<display-name>Thong Tin Phan Hoi Action</display-name>
+		<portlet-class>
+			vn.dtt.ns.thongtinphanhoi.ThongTinPhanHoiAction
+		</portlet-class>
+		<init-param>
+			<name>view-template</name>
+			<value>/html/backend/phanhoi/ds_phanhoi.jsp</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+		<resource-bundle>content/Language_thongtinphanhoi</resource-bundle>
+		<portlet-info>
+			<title>Thong Tin Phan Hoi Action</title>
+			<short-title>Thong Tin Phan Hoi Action</short-title>
+			<keywords></keywords>
+		</portlet-info>
+		<security-role-ref>
+			<role-name>administrator</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>guest</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>power-user</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>user</role-name>
+		</security-role-ref>
+	</portlet>
+	<portlet>
+		<portlet-name>yeu-cau-giai-trinh</portlet-name>
+		<display-name>Yeu Cau Giai Trinh</display-name>
+		<portlet-class>
+			vn.dtt.ns.yeucaugiaitrinh.YeuCauGiaiTrinhAction
+		</portlet-class>
+		<init-param>
+			<name>view-template</name>
+			<value>/html/backend/yeucau_giaitrinh/ds_yeucau_giaitrinh.jsp</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+		<resource-bundle>content/Language_yeucaugiaitrinh</resource-bundle>
+		<portlet-info>
+			<title>Yeu Cau Giai Trinh</title>
+			<short-title>Yeu Cau Giai Trinh</short-title>
+			<keywords></keywords>
+		</portlet-info>
+		<security-role-ref>
+			<role-name>administrator</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>guest</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>power-user</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>user</role-name>
+		</security-role-ref>
+	</portlet>
+	<portlet>
+		<portlet-name>quan-ly-nguoi-dung</portlet-name>
+		<display-name>Quan Ly Nguoi Dung</display-name>
+		<portlet-class>
+			vn.dtt.ns.quanlynguoidung.QuanLyNguoiDungAction
+		</portlet-class>
+		<init-param>
+			<name>view-template</name>
+			<value>/html/backend/quanly_nguoidung/view.jsp</value>
+		</init-param>
+		<init-param>
+			<name>template-path</name>
+			<value>/html/backend/quanly_nguoidung/</value>
+		</init-param>
+		<init-param>
+			<name>add-process-action-success-action</name>  
+			<value>false</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+		<portlet-info>
+			<title>Quan Ly Nguoi Dung</title>
+			<short-title>Quan Ly Nguoi Dung</short-title>
+			<keywords></keywords>
+		</portlet-info>
+		<security-role-ref>
+			<role-name>administrator</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>guest</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>power-user</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>user</role-name>
+		</security-role-ref>
+	</portlet>
+</portlet-app>

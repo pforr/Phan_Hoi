@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
+<service-builder package-path="vn.dtt.ns.thongtinphanhoi.dao">
+	<author>tubq</author>
+	<namespace>thongtinphanhoi</namespace>
+
+	<entity name="ThongTinPhanHoi" table="ws_thongtin_phanhoi" local-service="true" remote-service="true" data-source="thongtinphanhoiDatasource" cache-enabled="false">
+		<!-- PK fields -->
+		<column name="id" type="long" primary="true" db-name="id"/>
+		
+		<!-- Other fields -->
+		<column name="soDienThoai" db-name="sodienthoai" type="String" />
+		<column name="thoiGianGoi" db-name="thoigiangoi" type="Date" />
+		<column name="trangThaiGiaoDich" db-name="trangthai_giaodich" type="int" />
+		<column name="tongDai" db-name="tongdai" type="int" />
+		<column name="maTinh" db-name="matinh" type="String" />
+		<column name="maHuyen" db-name="mahuyen" type="String" />
+		<column name="maXa" db-name="maxa" type="String" />		
+				
+		<!-- Order -->
+		<order by="desc">
+			<order-column name="id" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="SoDienThoai" return-type="Collection">
+			<finder-column name="soDienThoai" />
+		</finder>
+	</entity>
+	
+	<entity name="ChiTietThongTinPhanHoi" table="ws_chitiet_thongtin_phanhoi" local-service="true" remote-service="true" data-source="thongtinphanhoiDatasource" cache-enabled="false">
+		<!-- PK fields -->
+		<column name="id" type="long" primary="true" db-name="id"/>
+		
+		<!-- FK fields -->
+		<column name="thongTinPhanHoiId" db-name="thongtin_phanhoi_id" type="long" />		
+		
+		<!-- Other fields -->				
+		<column name="maTramCapNuoc" db-name="matramcapnuoc" type="String" />		
+		<column name="noiDungKhacNuoc" db-name="noidungkhac_nuoc" type="String" />
+		<column name="noiDungKhacVeSinh" db-name="noidungkhac_vesinh" type="String" />
+		<column name="maThongTinPhanAnh" db-name="mathongtinphananh" type="String" />
+		<column db-name="yeucau_giaitrinh_id" type="long" name="yeuCauGiaiTrinhId"/>
+				
+		<!-- Order -->
+		<order by="desc">
+			<order-column name="id" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="ThongTinPhanHoiId" return-type="Collection">
+			<finder-column name="thongTinPhanHoiId" />
+		</finder>
+	</entity>
+	
+	<entity name="TopicPhanHoi" local-service="true" remote-service="true" cache-enabled="false">		
+		<column name="topicCode"  type="String"  primary="true" db-name="code" />	
+		<column name="maTinh" type="String" db-name="matinh" />		
+		<column name="maHuyen" type="String" db-name="mahuyen" />		
+		<column name="topicName" type="String" db-name="name" />				
+	</entity>
+	
+	<entity name="TopicDetails" local-service="true" remote-service="true" cache-enabled="false">
+		<column name="id"  type="long" primary="true" db-name="id" />		
+		<column name="soDienThoai" type="String" db-name="sodienthoai" />	
+		<column name="thoiGianGoi" type="Date" db-name="thoigiangoi" />		
+		<column name="tongDai" type="int" db-name="tongdai" />	
+		<column name="maTinh" type="String" db-name="matinh" />
+		<column name="maHuyen" type="String" db-name="mahuyen" />
+		<column name="maXa" type="String" db-name="maxa" />	
+		<column name="maTramCapNuoc" type="String" db-name="matramcapnuoc" />		
+		<column name="maThongTinPhanAnh" type="String" db-name="mathongtinphananh" />
+		<column name="noiDungKhacNuoc" type="String" db-name="noidungkhac_nuoc" />
+		<column name="noiDungKhacVesinh" type="String" db-name="noidungkhac_vesinh" />
+		<column name="yeuCauGiaiTrinhId"  type="long" db-name="yeucau_giaitrinh_id"/>				
+	</entity>
+	
+</service-builder>

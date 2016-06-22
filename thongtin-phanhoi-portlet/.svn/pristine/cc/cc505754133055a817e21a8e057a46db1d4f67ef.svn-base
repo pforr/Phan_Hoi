@@ -1,0 +1,288 @@
+package vn.dtt.ns.minhbach;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.AuthCache;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicAuthCache;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+public class TestLiferayJSON {
+	private static Log _log = LogFactoryUtil.getLog(TestLiferayJSON.class);
+
+	public static void main(String[] args) throws Exception {
+		String title = "Giải trình về chủ đề  THỦ TỤC LẮP ĐẶT VÀ MUA SẮM THIẾT BỊ tại xã/phường  Hà Sơn";
+
+		String content = "<h4  style=\"text-align:center;\">Giải trình về chủ đề  THỦ TỤC LẮP ĐẶT VÀ MUA SẮM THIẾT BỊ tại xã/phường  Bắc Sơn</h4><div><table style=\"width:100%; text-align:center;\"><tr><td style=\"width:30%; text-align:left;\">Tỉnh/Thành phố: Hà Nội</td><td style=\"width:30%; text-align:left;\">Quận/Huyện: Sóc Sơn</td><td style=\"width:30%; text-align:left;\">Xã/Phường: Bắc Sơn</td></tr><tr><td style=\"width:30%; text-align:left;\">Chủ đề: THỦ TỤC LẮP ĐẶT VÀ MUA SẮM THIẾT BỊ</td><td style=\"width:30%; text-align:left;\">Ngày tạo: 31/05/2016</td><td style=\"width:30%; text-align:left;\">Số phản hồi: 5</td></tr></table></div><div><table  style=\"width:100%; text-align:center;\"><thead><tr><th>STT</th><th>Thông tin phản ánh</th><th>Giải trình</th></thead></tr><tr><td style=\"width:10%; text-align: center;\">1</td><td style=\"width:40%; text-align: center;\"></td><td style=\"width:10%; text-align: center;\">tryty</td></tr><tr><td style=\"width:10%; text-align: center;\">2</td><td style=\"width:40%; text-align: center;\"></td><td style=\"width:10%; text-align: center;\">yutyu</td></tr><tr><td style=\"width:10%; text-align: center;\">3</td><td style=\"width:40%; text-align: center;\"></td><td style=\"width:10%; text-align: center;\">sdfdsf</td></tr><tr><td style=\"width:10%; text-align: center;\">4</td><td style=\"width:40%; text-align: center;\"></td><td style=\"width:10%; text-align: center;\">tryty</td></tr><tr><td style=\"width:10%; text-align: center;\">5</td><td style=\"width:40%; text-align: center;\"></td><td style=\"width:10%; text-align: center;\">yutyu</td></tr></table></div>";
+		addArticle(title, content);
+	}
+
+	public static ModelAddArticle addArticle(String titleIn, String contentIn) {
+		ModelAddArticle result = null;
+		// HttpHost targetHost = new HttpHost("119.17.253.82");
+		HttpHost targetHost = new HttpHost("hanoi.dtt.vn", 8182, "http"); // hanoi
+		// HttpHost targetHost = new HttpHost("119.17.253.82",80 , "http"); // that
+		DefaultHttpClient httpclient = new DefaultHttpClient();
+		httpclient.getCredentialsProvider().setCredentials(
+				new AuthScope(targetHost.getHostName(), targetHost.getPort()),
+				new UsernamePasswordCredentials("test@liferay.com", "test")); // HANOI
+		// new UsernamePasswordCredentials("test@liferay.com", "dtt@2015")); // that
+
+		// Create AuthCache instance
+		AuthCache authCache = new BasicAuthCache();
+		// Generate BASIC scheme object and add it to the local auth cache
+		BasicScheme basicAuth = new BasicScheme();
+		authCache.put(targetHost, basicAuth);
+
+		// Add AuthCache to the execution context
+
+		BasicHttpContext ctx = new BasicHttpContext();
+		ctx.setAttribute(ClientContext.AUTH_CACHE, authCache);
+
+		HttpPost post = new HttpPost("/api/jsonws/journalarticle/add-article");
+		// HttpPost post = new
+		// HttpPost("/LiferayJSONWebservices-portlet/api/jsonws/employee/get-employee");
+		//Base64 b = new Base64();
+		//String encoding = b.encodeAsString(new String("test@liferay.com:dtt@2015").getBytes());
+		// post.setHeader("Authorization", "Basic " + encoding);
+		Calendar yesterday = Calendar.getInstance();
+		// yesterday.add(Calendar.DAY_OF_YEAR, -1);
+		Calendar nextWeek = Calendar.getInstance();
+		nextWeek.add(Calendar.WEEK_OF_YEAR, 1);
+
+		String xmlContent = "<?xml version='1.0' encoding='UTF-8'?>"
+				+ "<root default-locale=\"vi_VN\" available-locales=\"en_US,vi_VN\">"
+				+ "<static-content language-id=\"en_US\">" + "<![CDATA["
+				+ contentIn + "]]>" + "</static-content>"
+				+ "<static-content language-id=\"vi_VN\">" + "<![CDATA["
+				+ contentIn + "]]>" + "</static-content>" + "</root>";
+
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("groupId", "10181")); // hanoi: 10181 that: 40471
+		params.add(new BasicNameValuePair("folderId", "0"));
+		params.add(new BasicNameValuePair("classNameId", "0"));
+		params.add(new BasicNameValuePair("classPK", "0"));
+		params.add(new BasicNameValuePair("articleId", "800"));
+		params.add(new BasicNameValuePair("autoArticleId", "true"));
+		params.add(new BasicNameValuePair("titleMap", "{\"vi_VN\":\" " + titleIn+ " \"}"));
+		params.add(new BasicNameValuePair("descriptionMap","{\"vi_VN\":\"  \"}"));
+		// params.add(new BasicNameValuePair("content",
+		// "<?xml version=\"1.0\"?><root available-locales=\"vi_VN\" default-locale=\"vi_VN\">"
+		// +
+		// "<dynamic-element name=\"content\" type=\"text_area\" index-type=\"keyword\" index=\"0\">"
+		// + "<dynamic-content language-id=\"vi_VN\">" +
+		// "<![CDATA["+content+"]]></dynamic-content></dynamic-element></root>"));
+		params.add(new BasicNameValuePair("content", xmlContent));
+		params.add(new BasicNameValuePair("type", "general"));
+		params.add(new BasicNameValuePair("ddmStructureKey", ""));
+		params.add(new BasicNameValuePair("ddmTemplateKey", ""));
+		params.add(new BasicNameValuePair("layoutUuid", ""));
+		params.add(new BasicNameValuePair("displayDateMonth", ""+ (yesterday.get(Calendar.MONTH))));
+		params.add(new BasicNameValuePair("displayDateDay", ""+ yesterday.get(Calendar.DAY_OF_MONTH)));
+		params.add(new BasicNameValuePair("displayDateYear", ""+ yesterday.get(Calendar.YEAR)));
+		params.add(new BasicNameValuePair("displayDateHour", ""+ yesterday.get(Calendar.HOUR_OF_DAY)));
+		params.add(new BasicNameValuePair("displayDateMinute", ""+ yesterday.get(Calendar.MINUTE)));
+		params.add(new BasicNameValuePair("expirationDateMonth", ""+ (1 + nextWeek.get(Calendar.MONTH))));
+		params.add(new BasicNameValuePair("expirationDateDay", ""+ nextWeek.get(Calendar.DAY_OF_MONTH)));
+		params.add(new BasicNameValuePair("expirationDateYear", ""+ nextWeek.get(Calendar.YEAR)));
+		params.add(new BasicNameValuePair("expirationDateHour", ""+ nextWeek.get(Calendar.HOUR_OF_DAY)));
+		params.add(new BasicNameValuePair("expirationDateMinute", ""+ nextWeek.get(Calendar.MINUTE)));
+		params.add(new BasicNameValuePair("neverExpire", "true"));
+		params.add(new BasicNameValuePair("reviewDateMonth", ""+ (1 + nextWeek.get(Calendar.MONTH))));
+		params.add(new BasicNameValuePair("reviewDateDay", ""+ nextWeek.get(Calendar.DAY_OF_MONTH)));
+		params.add(new BasicNameValuePair("reviewDateYear", ""+ nextWeek.get(Calendar.YEAR)));
+		params.add(new BasicNameValuePair("reviewDateHour", ""+ nextWeek.get(Calendar.HOUR_OF_DAY)));
+		params.add(new BasicNameValuePair("reviewDateMinute", ""+ nextWeek.get(Calendar.MINUTE)));
+		params.add(new BasicNameValuePair("neverReview", "true"));
+		params.add(new BasicNameValuePair("indexable", "true"));
+		params.add(new BasicNameValuePair("articleURL", "articleURL"));
+		params.add(new BasicNameValuePair("serviceContext", "{}"));
+		params.add(new BasicNameValuePair("serviceContext.scopeGroupId","10181"));
+		params.add(new BasicNameValuePair("serviceContext.assetCategoryIds","28710")); // hanoi: 28710 that: 42410
+		try {
+			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params,"UTF-8");
+			post.setEntity(entity);
+			HttpResponse resp = httpclient.execute(targetHost, post, ctx);
+			try {
+				String str = "";
+				
+				
+				_log.info("--addArticle--" + resp.getStatusLine());
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				resp.getEntity().writeTo(baos);
+				str = baos.toString();
+				//_log.info("str--"+str);
+				// System.out.println(resp.getStatusLine());
+				//resp.getEntity().writeTo(System.out);
+				
+				result = new ModelAddArticle();
+				JSONObject json_data = new JSONObject(str);
+				String articleId = json_data.getString("articleId");
+				int groupId = json_data.getInt("groupId");
+				int userId = json_data.getInt("userId");
+				int version = json_data.getInt("version");
+				
+				/* can lay them gi thi lay, hien tai chi can articleId, 14-06-2016
+				String articleId = json_data.getString("articleId");
+				int classNameId = json_data.getInt("classNameId");
+				int classPK = json_data.getInt("classPK");
+				int companyId = json_data.getInt("companyId");
+				String content = json_data.getString("content");
+				int createDate = json_data.getInt("createDate");
+				String description = json_data.getString("description");
+				String descriptionCurrentValue = json_data.getString("descriptionCurrentValue");
+				int displayDate = json_data.getInt("displayDate");
+				int expirationDate = json_data.getInt("expirationDate");
+				int folderId = json_data.getInt("folderId");
+				int groupId = json_data.getInt("groupId");
+				int id = json_data.getInt("id");
+				boolean indexable = json_data.getBoolean("indexable");
+				String layoutUuid = json_data.getString("layoutUuid");
+				int modifiedDate = json_data.getInt("modifiedDate");
+				int resourcePrimKey = json_data.getInt("resourcePrimKey");
+				int reviewDate = json_data.getInt("reviewDate");
+				boolean smallImage = json_data.getBoolean("smallImage");
+				int smallImageId = json_data.getInt("smallImageId");
+				String smallImageURL = json_data.getString("smallImageURL");
+				int status = json_data.getInt("status");
+				int statusByUserId = json_data.getInt("statusByUserId");
+				String statusByUserName = json_data.getString("statusByUserName");
+				int statusDate = json_data.getInt("statusDate");
+				String structureId = json_data.getString("structureId");
+				String templateId = json_data.getString("templateId");
+				String title = json_data.getString("title");
+				String titleCurrentValue = json_data.getString("titleCurrentValue");
+				String treePath = json_data.getString("treePath");
+				String type = json_data.getString("type");
+				String urlTitle = json_data.getString("urlTitle");
+				int userId = json_data.getInt("userId");
+				String userName = json_data.getString("userName");
+				String uuid = json_data.getString("uuid");
+				int version = json_data.getInt("version");
+				*/
+				
+				
+				result.setArticleId(articleId);
+				result.setGroupId(groupId);
+				result.setUserId(userId);
+				result.setVersion(version);
+				_log.info("out--articleId-"+result.getArticleId());
+				EntityUtils.consume(entity);
+			} finally {
+				httpclient.getConnectionManager().shutdown();
+			}
+		} catch (Exception e) {
+			result = null;
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	   public static boolean updateArticle(long userId, long groupId,String version,  long articleId, String title, String content) {
+	    	boolean result = true;
+	        //HttpHost targetHost = new HttpHost("119.17.253.82");
+	        HttpHost targetHost = new HttpHost("hanoi.dtt.vn", 8182, "http");
+	        //HttpHost targetHost = new HttpHost("119.17.253.82",80 , "http");
+	        DefaultHttpClient httpclient = new DefaultHttpClient();
+	        httpclient.getCredentialsProvider().setCredentials(
+	         new AuthScope(targetHost.getHostName(), targetHost.getPort()),
+	         new UsernamePasswordCredentials("test@liferay.com", "test"));
+
+	        
+	        
+	        // Create AuthCache instance
+	        AuthCache authCache = new BasicAuthCache();
+	        // Generate BASIC scheme object and add it to the local auth cache
+	        BasicScheme basicAuth = new BasicScheme();
+	        authCache.put(targetHost, basicAuth);
+
+
+	        // Add AuthCache to the execution context
+
+	        BasicHttpContext ctx = new BasicHttpContext();
+	        ctx.setAttribute(ClientContext.AUTH_CACHE, authCache);
+
+	        HttpPost post = new HttpPost("/api/jsonws/journalarticle/update-article");
+	       // HttpPost post = new HttpPost("/LiferayJSONWebservices-portlet/api/jsonws/employee/get-employee");
+	        Base64 b = new Base64();
+	        String encoding = b.encodeAsString(new String("test@liferay.com:dtt@2015").getBytes());
+	       // post.setHeader("Authorization", "Basic " + encoding);      
+	        Calendar yesterday = Calendar.getInstance();
+	       // yesterday.add(Calendar.DAY_OF_YEAR, -1);
+	        Calendar nextWeek = Calendar.getInstance();
+	        nextWeek.add(Calendar.WEEK_OF_YEAR, 1);
+	        
+	        String xmlContent = "<?xml version='1.0' encoding='UTF-8'?>" +
+		    		"<root default-locale=\"vi_VN\" available-locales=\"en_US,vi_VN\">" +
+		    			"<static-content language-id=\"en_US\">" +
+		    				"<![CDATA[" + content + "]]>" +
+		    			"</static-content>" +
+		    			"<static-content language-id=\"vi_VN\">" +
+		    				"<![CDATA[" + content + "]]>" +
+		    			"</static-content>" +
+		    		"</root>";
+		       
+	        
+	        
+	        List < NameValuePair > params = new ArrayList < NameValuePair > ();
+	        params.add(new BasicNameValuePair("userId", Long.toString(userId))); // 40471
+	        params.add(new BasicNameValuePair("groupId", "10181"));
+	        params.add(new BasicNameValuePair("folderId", "0"));
+	        params.add(new BasicNameValuePair("articleId", Long.toString(articleId)));
+	        params.add(new BasicNameValuePair("version", "1.1"));
+	        params.add(new BasicNameValuePair("titleMap", "{\"vi_VN\":\" "+ title +" \"}"));
+	        params.add(new BasicNameValuePair("descriptionMap", "{\"vi_VN\":\" "+ title +" \"}"));
+	        params.add(new BasicNameValuePair("content", xmlContent));
+	        params.add(new BasicNameValuePair("layoutUuid", ""));
+
+	        params.add(new BasicNameValuePair("serviceContext", "{}"));
+	        params.add(new BasicNameValuePair("serviceContext.scopeGroupId", "10181"));
+	        params.add(new BasicNameValuePair("serviceContext.assetCategoryIds", "28710")); // 42410
+	        try {
+	         UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "UTF-8");
+	         post.setEntity(entity);
+	         HttpResponse resp = httpclient.execute(targetHost, post, ctx);
+	         try {
+	         // System.out.println(resp.getStatusLine());
+	         // System.out.println(EntityUtils.toString(entity));
+	          System.out.println(resp.getStatusLine());
+	          resp.getEntity().writeTo(System.out);
+	          //resp.getEntity().getContentEncoding().
+	          EntityUtils.consume(entity);
+	         } finally {
+	          httpclient.getConnectionManager().shutdown();
+	         }
+	        } catch (Exception e) {
+	        	result = false;
+	        	e.printStackTrace();
+	        }
+	        
+	        return result;
+	   }   
+}

@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd">
+	<persistence-unit-metadata>
+		<xml-mapping-metadata-complete/>
+		<persistence-unit-defaults>
+			<access>PROPERTY</access>
+		</persistence-unit-defaults>
+	</persistence-unit-metadata>
+	<mapped-superclass class="vn.dtt.ns.thongtinphanhoi.dao.model.impl.ChiTietThongTinPhanHoiModelImpl">
+		<attributes>
+			<id name="id" />
+			<basic name="thongTinPhanHoiId">
+				<column name="THONGTIN_PHANHOI_ID" />
+			</basic>
+			<basic name="maThongTinPhanAnh">
+				<column name="MATHONGTINPHANANH" />
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="vn.dtt.ns.thongtinphanhoi.dao.model.impl.ThongTinPhanHoiModelImpl">
+		<attributes>
+			<id name="id" />
+			<basic name="soDienThoai">
+				<column name="SODIENTHOAI" />
+			</basic>
+			<basic name="thoiGianGoi">
+				<column name="THOIGIANGOI" />
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="trangThaiGiaoDich">
+				<column name="TRANGTHAI_GIAODICH" />
+			</basic>
+			<basic name="tongDai">
+				<column name="TONGDAI" />
+			</basic>
+			<basic name="loaiGiaoDichPhanHoi">
+				<column name="LOAI_GIAODICH_PHANHOI" />
+			</basic>
+			<basic name="maTinh">
+				<column name="MATINH" />
+			</basic>
+			<basic name="maHuyen">
+				<column name="MAHUYEN" />
+			</basic>
+			<basic name="maXa">
+				<column name="MAXA" />
+			</basic>
+			<basic name="maTramCapNuoc">
+				<column name="MATRAMCAPNUOC" />
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<entity class="vn.dtt.ns.thongtinphanhoi.dao.model.impl.ChiTietThongTinPhanHoiImpl" name="ChiTietThongTinPhanHoi">
+		<table name="ws_chitiet_thongtin_phanhoi" />
+		<attributes />
+	</entity>
+	<entity class="vn.dtt.ns.thongtinphanhoi.dao.model.impl.ThongTinPhanHoiImpl" name="ThongTinPhanHoi">
+		<table name="ws_thongtin_phanhoi" />
+		<attributes />
+	</entity>
+</entity-mappings>

@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false" auto-import="false">
+	<import class="vn.dtt.ns.thongtinphanhoi.dao.model.ChiTietThongTinPhanHoi" />
+	<import class="vn.dtt.ns.thongtinphanhoi.dao.model.ThongTinPhanHoi" />
+	<import class="vn.dtt.ns.thongtinphanhoi.dao.model.TopicDetails" />
+	<import class="vn.dtt.ns.thongtinphanhoi.dao.model.TopicPhanHoi" />
+	<import class="vn.dtt.ns.yeucaugiaitrinh.dao.model.TrangThaiGiaiTrinh" />
+	<import class="vn.dtt.ns.yeucaugiaitrinh.dao.model.YeuCauGiaiTrinh" />
+	<class name="vn.dtt.ns.thongtinphanhoi.dao.model.impl.ChiTietThongTinPhanHoiImpl" table="ws_chitiet_thongtin_phanhoi">
+		<id name="id" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="thongTinPhanHoiId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="thongtin_phanhoi_id" />
+		<property name="maTramCapNuoc" type="com.liferay.portal.dao.orm.hibernate.StringType" column="matramcapnuoc" />
+		<property name="noiDungKhacNuoc" type="com.liferay.portal.dao.orm.hibernate.StringType" column="noidungkhac_nuoc" />
+		<property name="noiDungKhacVeSinh" type="com.liferay.portal.dao.orm.hibernate.StringType" column="noidungkhac_vesinh" />
+		<property name="maThongTinPhanAnh" type="com.liferay.portal.dao.orm.hibernate.StringType" column="mathongtinphananh" />
+		<property name="yeuCauGiaiTrinhId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="yeucau_giaitrinh_id" />
+	</class>
+	<class name="vn.dtt.ns.thongtinphanhoi.dao.model.impl.ThongTinPhanHoiImpl" table="ws_thongtin_phanhoi">
+		<id name="id" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="soDienThoai" type="com.liferay.portal.dao.orm.hibernate.StringType" column="sodienthoai" />
+		<property name="thoiGianGoi" type="org.hibernate.type.TimestampType" column="thoigiangoi" />
+		<property name="trangThaiGiaoDich" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="trangthai_giaodich" />
+		<property name="tongDai" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="tongdai" />
+		<property name="maTinh" type="com.liferay.portal.dao.orm.hibernate.StringType" column="matinh" />
+		<property name="maHuyen" type="com.liferay.portal.dao.orm.hibernate.StringType" column="mahuyen" />
+		<property name="maXa" type="com.liferay.portal.dao.orm.hibernate.StringType" column="maxa" />
+	</class>
+	<class name="vn.dtt.ns.thongtinphanhoi.dao.model.impl.TopicDetailsImpl" table="thongtinphanhoi_TopicDetails">
+		<id name="id" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="soDienThoai" type="com.liferay.portal.dao.orm.hibernate.StringType" column="sodienthoai" />
+		<property name="thoiGianGoi" type="org.hibernate.type.TimestampType" column="thoigiangoi" />
+		<property name="tongDai" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="tongdai" />
+		<property name="maTinh" type="com.liferay.portal.dao.orm.hibernate.StringType" column="matinh" />
+		<property name="maHuyen" type="com.liferay.portal.dao.orm.hibernate.StringType" column="mahuyen" />
+		<property name="maXa" type="com.liferay.portal.dao.orm.hibernate.StringType" column="maxa" />
+		<property name="maTramCapNuoc" type="com.liferay.portal.dao.orm.hibernate.StringType" column="matramcapnuoc" />
+		<property name="maThongTinPhanAnh" type="com.liferay.portal.dao.orm.hibernate.StringType" column="mathongtinphananh" />
+		<property name="noiDungKhacNuoc" type="com.liferay.portal.dao.orm.hibernate.StringType" column="noidungkhac_nuoc" />
+		<property name="noiDungKhacVesinh" type="com.liferay.portal.dao.orm.hibernate.StringType" column="noidungkhac_vesinh" />
+		<property name="yeuCauGiaiTrinhId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="yeucau_giaitrinh_id" />
+	</class>
+	<class name="vn.dtt.ns.thongtinphanhoi.dao.model.impl.TopicPhanHoiImpl" table="thongtinphanhoi_TopicPhanHoi">
+		<id name="topicCode" column="code" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<property name="maTinh" type="com.liferay.portal.dao.orm.hibernate.StringType" column="matinh" />
+		<property name="maHuyen" type="com.liferay.portal.dao.orm.hibernate.StringType" column="mahuyen" />
+		<property name="topicName" type="com.liferay.portal.dao.orm.hibernate.StringType" column="name" />
+	</class>
+	<class name="vn.dtt.ns.yeucaugiaitrinh.dao.model.impl.TrangThaiGiaiTrinhImpl" table="ws_trangthai_giaitrinh">
+		<id name="id" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="yeuCauGiaiTrinhId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="yeucau_giaitrinh_id" />
+		<property name="trangThai" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="trangthai" />
+		<property name="ghiChuNguoiLap" type="com.liferay.portal.dao.orm.hibernate.StringType" column="ghichu_nguoitao" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="ngayTao" type="org.hibernate.type.TimestampType" column="ngaytao" />
+		<property name="ghiChuNguoiDuyet" type="com.liferay.portal.dao.orm.hibernate.StringType" column="ghichu_nguoiduyet" />
+	</class>
+	<class name="vn.dtt.ns.yeucaugiaitrinh.dao.model.impl.YeuCauGiaiTrinhImpl" table="ws_yeucau_giaitrinh">
+		<id name="id" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="maTinh" type="com.liferay.portal.dao.orm.hibernate.StringType" column="matinh" />
+		<property name="maHuyen" type="com.liferay.portal.dao.orm.hibernate.StringType" column="mahuyen" />
+		<property name="maChuDe" type="com.liferay.portal.dao.orm.hibernate.StringType" column="machude" />
+		<property name="soLuongTheoChuDe" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="soluong_theochude" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="ngayTao" type="org.hibernate.type.TimestampType" column="ngaytao" />
+		<property name="ngayCapNhat" type="org.hibernate.type.TimestampType" column="ngaycapnhat" />
+		<property name="nguoiPheDuyet" type="com.liferay.portal.dao.orm.hibernate.LongType" column="nguoipheduyet" />
+	</class>
+</hibernate-mapping>

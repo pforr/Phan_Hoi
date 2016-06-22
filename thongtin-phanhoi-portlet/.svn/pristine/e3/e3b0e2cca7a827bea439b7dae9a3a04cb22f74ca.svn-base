@@ -1,0 +1,54 @@
+package vn.dtt.ns.thongtinphanhoi.util;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import com.liferay.portal.kernel.util.StringPool;
+
+public class DateTimeUtil {
+	
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	
+	public static String formatDate(Date dateInput) {
+		
+		String result = StringPool.BLANK;
+		try {
+			result = DATE_FORMAT.format(dateInput);
+			
+			return result;
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return StringPool.BLANK;
+		}
+	}
+	
+	public static Date convertStringToDate(String stringInput) {
+		
+		Date result = null;
+		try {
+			result = DATE_FORMAT.parse(stringInput);
+			
+			return result;
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static Date getEndOfDay(Date day) {
+	      return getEndOfDay(day,Calendar.getInstance());
+	}
+	
+	public static Date getEndOfDay(Date day,Calendar cal) {
+	      if (day == null) day = new Date();
+	      cal.setTime(day);
+	      cal.set(Calendar.HOUR_OF_DAY, cal.getMaximum(Calendar.HOUR_OF_DAY));
+	      cal.set(Calendar.MINUTE,      cal.getMaximum(Calendar.MINUTE));
+	      cal.set(Calendar.SECOND,      cal.getMaximum(Calendar.SECOND));
+	      cal.set(Calendar.MILLISECOND, cal.getMaximum(Calendar.MILLISECOND));
+	      return cal.getTime();
+	}
+}

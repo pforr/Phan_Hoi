@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.ChiTietThongTinPhanHoiLocalService" class="vn.dtt.ns.thongtinphanhoi.dao.service.impl.ChiTietThongTinPhanHoiLocalServiceImpl" />
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.ChiTietThongTinPhanHoiService" class="vn.dtt.ns.thongtinphanhoi.dao.service.impl.ChiTietThongTinPhanHoiServiceImpl" />
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.persistence.ChiTietThongTinPhanHoiPersistence" class="vn.dtt.ns.thongtinphanhoi.dao.service.persistence.ChiTietThongTinPhanHoiPersistenceImpl" parent="basePersistence">
+		<property name="dataSource" ref="thongtinphanhoiDatasource" />
+	</bean>
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.ThongTinPhanHoiLocalService" class="vn.dtt.ns.thongtinphanhoi.dao.service.impl.ThongTinPhanHoiLocalServiceImpl" />
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.ThongTinPhanHoiService" class="vn.dtt.ns.thongtinphanhoi.dao.service.impl.ThongTinPhanHoiServiceImpl" />
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.persistence.ThongTinPhanHoiPersistence" class="vn.dtt.ns.thongtinphanhoi.dao.service.persistence.ThongTinPhanHoiPersistenceImpl" parent="basePersistence">
+		<property name="dataSource" ref="thongtinphanhoiDatasource" />
+	</bean>
+</beans>

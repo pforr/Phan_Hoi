@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.ChiTietThongTinPhanHoiLocalService" class="vn.dtt.ns.thongtinphanhoi.dao.service.impl.ChiTietThongTinPhanHoiLocalServiceImpl" />
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.ChiTietThongTinPhanHoiService" class="vn.dtt.ns.thongtinphanhoi.dao.service.impl.ChiTietThongTinPhanHoiServiceImpl" />
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.persistence.ChiTietThongTinPhanHoiPersistence" class="vn.dtt.ns.thongtinphanhoi.dao.service.persistence.ChiTietThongTinPhanHoiPersistenceImpl" parent="basePersistence">
+		<property name="dataSource" ref="thongtinphanhoiDatasource" />
+	</bean>
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.persistence.ChiTietThongTinPhanHoiFinder" class="vn.dtt.ns.thongtinphanhoi.dao.service.persistence.ChiTietThongTinPhanHoiFinderImpl" parent="basePersistence">
+		<property name="dataSource" ref="thongtinphanhoiDatasource" />
+	</bean>
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.ThongTinPhanHoiLocalService" class="vn.dtt.ns.thongtinphanhoi.dao.service.impl.ThongTinPhanHoiLocalServiceImpl" />
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.ThongTinPhanHoiService" class="vn.dtt.ns.thongtinphanhoi.dao.service.impl.ThongTinPhanHoiServiceImpl" />
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.persistence.ThongTinPhanHoiPersistence" class="vn.dtt.ns.thongtinphanhoi.dao.service.persistence.ThongTinPhanHoiPersistenceImpl" parent="basePersistence">
+		<property name="dataSource" ref="thongtinphanhoiDatasource" />
+	</bean>
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.TopicDetailsLocalService" class="vn.dtt.ns.thongtinphanhoi.dao.service.impl.TopicDetailsLocalServiceImpl" />
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.TopicDetailsService" class="vn.dtt.ns.thongtinphanhoi.dao.service.impl.TopicDetailsServiceImpl" />
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.persistence.TopicDetailsPersistence" class="vn.dtt.ns.thongtinphanhoi.dao.service.persistence.TopicDetailsPersistenceImpl" parent="basePersistence" />
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.TopicPhanHoiLocalService" class="vn.dtt.ns.thongtinphanhoi.dao.service.impl.TopicPhanHoiLocalServiceImpl" />
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.TopicPhanHoiService" class="vn.dtt.ns.thongtinphanhoi.dao.service.impl.TopicPhanHoiServiceImpl" />
+	<bean id="vn.dtt.ns.thongtinphanhoi.dao.service.persistence.TopicPhanHoiPersistence" class="vn.dtt.ns.thongtinphanhoi.dao.service.persistence.TopicPhanHoiPersistenceImpl" parent="basePersistence" />
+	<bean id="vn.dtt.ns.yeucaugiaitrinh.dao.service.ChiTietYeuCauGiaiTrinhLocalService" class="vn.dtt.ns.yeucaugiaitrinh.dao.service.impl.ChiTietYeuCauGiaiTrinhLocalServiceImpl" />
+	<bean id="vn.dtt.ns.yeucaugiaitrinh.dao.service.ChiTietYeuCauGiaiTrinhService" class="vn.dtt.ns.yeucaugiaitrinh.dao.service.impl.ChiTietYeuCauGiaiTrinhServiceImpl" />
+	<bean id="vn.dtt.ns.yeucaugiaitrinh.dao.service.persistence.ChiTietYeuCauGiaiTrinhPersistence" class="vn.dtt.ns.yeucaugiaitrinh.dao.service.persistence.ChiTietYeuCauGiaiTrinhPersistenceImpl" parent="basePersistence">
+		<property name="dataSource" ref="thongtinphanhoiDatasource" />
+	</bean>
+	<bean id="vn.dtt.ns.yeucaugiaitrinh.dao.service.TrangThaiGiaiTrinhLocalService" class="vn.dtt.ns.yeucaugiaitrinh.dao.service.impl.TrangThaiGiaiTrinhLocalServiceImpl" />
+	<bean id="vn.dtt.ns.yeucaugiaitrinh.dao.service.TrangThaiGiaiTrinhService" class="vn.dtt.ns.yeucaugiaitrinh.dao.service.impl.TrangThaiGiaiTrinhServiceImpl" />
+	<bean id="vn.dtt.ns.yeucaugiaitrinh.dao.service.persistence.TrangThaiGiaiTrinhPersistence" class="vn.dtt.ns.yeucaugiaitrinh.dao.service.persistence.TrangThaiGiaiTrinhPersistenceImpl" parent="basePersistence">
+		<property name="dataSource" ref="thongtinphanhoiDatasource" />
+	</bean>
+	<bean id="vn.dtt.ns.yeucaugiaitrinh.dao.service.persistence.TrangThaiGiaiTrinhFinder" class="vn.dtt.ns.yeucaugiaitrinh.dao.service.persistence.TrangThaiGiaiTrinhFinderImpl" parent="basePersistence">
+		<property name="dataSource" ref="thongtinphanhoiDatasource" />
+	</bean>
+	<bean id="vn.dtt.ns.yeucaugiaitrinh.dao.service.YeuCauGiaiTrinhLocalService" class="vn.dtt.ns.yeucaugiaitrinh.dao.service.impl.YeuCauGiaiTrinhLocalServiceImpl" />
+	<bean id="vn.dtt.ns.yeucaugiaitrinh.dao.service.YeuCauGiaiTrinhService" class="vn.dtt.ns.yeucaugiaitrinh.dao.service.impl.YeuCauGiaiTrinhServiceImpl" />
+	<bean id="vn.dtt.ns.yeucaugiaitrinh.dao.service.persistence.YeuCauGiaiTrinhPersistence" class="vn.dtt.ns.yeucaugiaitrinh.dao.service.persistence.YeuCauGiaiTrinhPersistenceImpl" parent="basePersistence">
+		<property name="dataSource" ref="thongtinphanhoiDatasource" />
+	</bean>
+	<bean id="vn.dtt.ns.yeucaugiaitrinh.dao.service.persistence.YeuCauGiaiTrinhFinder" class="vn.dtt.ns.yeucaugiaitrinh.dao.service.persistence.YeuCauGiaiTrinhFinderImpl" parent="basePersistence">
+		<property name="dataSource" ref="thongtinphanhoiDatasource" />
+	</bean>
+</beans>

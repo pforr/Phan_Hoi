@@ -1,0 +1,461 @@
+/**
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package vn.dtt.ns.yeucaugiaitrinh.dao.model;
+
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.ModelWrapper;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * <p>
+ * This class is a wrapper for {@link TrangThaiGiaiTrinh}.
+ * </p>
+ *
+ * @author tubq
+ * @see TrangThaiGiaiTrinh
+ * @generated
+ */
+public class TrangThaiGiaiTrinhWrapper implements TrangThaiGiaiTrinh,
+	ModelWrapper<TrangThaiGiaiTrinh> {
+	public TrangThaiGiaiTrinhWrapper(TrangThaiGiaiTrinh trangThaiGiaiTrinh) {
+		_trangThaiGiaiTrinh = trangThaiGiaiTrinh;
+	}
+
+	@Override
+	public Class<?> getModelClass() {
+		return TrangThaiGiaiTrinh.class;
+	}
+
+	@Override
+	public String getModelClassName() {
+		return TrangThaiGiaiTrinh.class.getName();
+	}
+
+	@Override
+	public Map<String, Object> getModelAttributes() {
+		Map<String, Object> attributes = new HashMap<String, Object>();
+
+		attributes.put("id", getId());
+		attributes.put("yeuCauGiaiTrinhId", getYeuCauGiaiTrinhId());
+		attributes.put("trangThai", getTrangThai());
+		attributes.put("ghiChuNguoiLap", getGhiChuNguoiLap());
+		attributes.put("userId", getUserId());
+		attributes.put("ngayTao", getNgayTao());
+		attributes.put("ngayCapNhat", getNgayCapNhat());
+		attributes.put("ghiChuNguoiDuyet", getGhiChuNguoiDuyet());
+
+		return attributes;
+	}
+
+	@Override
+	public void setModelAttributes(Map<String, Object> attributes) {
+		Long id = (Long)attributes.get("id");
+
+		if (id != null) {
+			setId(id);
+		}
+
+		Long yeuCauGiaiTrinhId = (Long)attributes.get("yeuCauGiaiTrinhId");
+
+		if (yeuCauGiaiTrinhId != null) {
+			setYeuCauGiaiTrinhId(yeuCauGiaiTrinhId);
+		}
+
+		Integer trangThai = (Integer)attributes.get("trangThai");
+
+		if (trangThai != null) {
+			setTrangThai(trangThai);
+		}
+
+		String ghiChuNguoiLap = (String)attributes.get("ghiChuNguoiLap");
+
+		if (ghiChuNguoiLap != null) {
+			setGhiChuNguoiLap(ghiChuNguoiLap);
+		}
+
+		Long userId = (Long)attributes.get("userId");
+
+		if (userId != null) {
+			setUserId(userId);
+		}
+
+		Date ngayTao = (Date)attributes.get("ngayTao");
+
+		if (ngayTao != null) {
+			setNgayTao(ngayTao);
+		}
+
+		Date ngayCapNhat = (Date)attributes.get("ngayCapNhat");
+
+		if (ngayCapNhat != null) {
+			setNgayCapNhat(ngayCapNhat);
+		}
+
+		String ghiChuNguoiDuyet = (String)attributes.get("ghiChuNguoiDuyet");
+
+		if (ghiChuNguoiDuyet != null) {
+			setGhiChuNguoiDuyet(ghiChuNguoiDuyet);
+		}
+	}
+
+	/**
+	* Returns the primary key of this trang thai giai trinh.
+	*
+	* @return the primary key of this trang thai giai trinh
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _trangThaiGiaiTrinh.getPrimaryKey();
+	}
+
+	/**
+	* Sets the primary key of this trang thai giai trinh.
+	*
+	* @param primaryKey the primary key of this trang thai giai trinh
+	*/
+	@Override
+	public void setPrimaryKey(long primaryKey) {
+		_trangThaiGiaiTrinh.setPrimaryKey(primaryKey);
+	}
+
+	/**
+	* Returns the ID of this trang thai giai trinh.
+	*
+	* @return the ID of this trang thai giai trinh
+	*/
+	@Override
+	public long getId() {
+		return _trangThaiGiaiTrinh.getId();
+	}
+
+	/**
+	* Sets the ID of this trang thai giai trinh.
+	*
+	* @param id the ID of this trang thai giai trinh
+	*/
+	@Override
+	public void setId(long id) {
+		_trangThaiGiaiTrinh.setId(id);
+	}
+
+	/**
+	* Returns the yeu cau giai trinh ID of this trang thai giai trinh.
+	*
+	* @return the yeu cau giai trinh ID of this trang thai giai trinh
+	*/
+	@Override
+	public long getYeuCauGiaiTrinhId() {
+		return _trangThaiGiaiTrinh.getYeuCauGiaiTrinhId();
+	}
+
+	/**
+	* Sets the yeu cau giai trinh ID of this trang thai giai trinh.
+	*
+	* @param yeuCauGiaiTrinhId the yeu cau giai trinh ID of this trang thai giai trinh
+	*/
+	@Override
+	public void setYeuCauGiaiTrinhId(long yeuCauGiaiTrinhId) {
+		_trangThaiGiaiTrinh.setYeuCauGiaiTrinhId(yeuCauGiaiTrinhId);
+	}
+
+	/**
+	* Returns the trang thai of this trang thai giai trinh.
+	*
+	* @return the trang thai of this trang thai giai trinh
+	*/
+	@Override
+	public int getTrangThai() {
+		return _trangThaiGiaiTrinh.getTrangThai();
+	}
+
+	/**
+	* Sets the trang thai of this trang thai giai trinh.
+	*
+	* @param trangThai the trang thai of this trang thai giai trinh
+	*/
+	@Override
+	public void setTrangThai(int trangThai) {
+		_trangThaiGiaiTrinh.setTrangThai(trangThai);
+	}
+
+	/**
+	* Returns the ghi chu nguoi lap of this trang thai giai trinh.
+	*
+	* @return the ghi chu nguoi lap of this trang thai giai trinh
+	*/
+	@Override
+	public java.lang.String getGhiChuNguoiLap() {
+		return _trangThaiGiaiTrinh.getGhiChuNguoiLap();
+	}
+
+	/**
+	* Sets the ghi chu nguoi lap of this trang thai giai trinh.
+	*
+	* @param ghiChuNguoiLap the ghi chu nguoi lap of this trang thai giai trinh
+	*/
+	@Override
+	public void setGhiChuNguoiLap(java.lang.String ghiChuNguoiLap) {
+		_trangThaiGiaiTrinh.setGhiChuNguoiLap(ghiChuNguoiLap);
+	}
+
+	/**
+	* Returns the user ID of this trang thai giai trinh.
+	*
+	* @return the user ID of this trang thai giai trinh
+	*/
+	@Override
+	public long getUserId() {
+		return _trangThaiGiaiTrinh.getUserId();
+	}
+
+	/**
+	* Sets the user ID of this trang thai giai trinh.
+	*
+	* @param userId the user ID of this trang thai giai trinh
+	*/
+	@Override
+	public void setUserId(long userId) {
+		_trangThaiGiaiTrinh.setUserId(userId);
+	}
+
+	/**
+	* Returns the user uuid of this trang thai giai trinh.
+	*
+	* @return the user uuid of this trang thai giai trinh
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public java.lang.String getUserUuid()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _trangThaiGiaiTrinh.getUserUuid();
+	}
+
+	/**
+	* Sets the user uuid of this trang thai giai trinh.
+	*
+	* @param userUuid the user uuid of this trang thai giai trinh
+	*/
+	@Override
+	public void setUserUuid(java.lang.String userUuid) {
+		_trangThaiGiaiTrinh.setUserUuid(userUuid);
+	}
+
+	/**
+	* Returns the ngay tao of this trang thai giai trinh.
+	*
+	* @return the ngay tao of this trang thai giai trinh
+	*/
+	@Override
+	public java.util.Date getNgayTao() {
+		return _trangThaiGiaiTrinh.getNgayTao();
+	}
+
+	/**
+	* Sets the ngay tao of this trang thai giai trinh.
+	*
+	* @param ngayTao the ngay tao of this trang thai giai trinh
+	*/
+	@Override
+	public void setNgayTao(java.util.Date ngayTao) {
+		_trangThaiGiaiTrinh.setNgayTao(ngayTao);
+	}
+
+	/**
+	* Returns the ngay cap nhat of this trang thai giai trinh.
+	*
+	* @return the ngay cap nhat of this trang thai giai trinh
+	*/
+	@Override
+	public java.util.Date getNgayCapNhat() {
+		return _trangThaiGiaiTrinh.getNgayCapNhat();
+	}
+
+	/**
+	* Sets the ngay cap nhat of this trang thai giai trinh.
+	*
+	* @param ngayCapNhat the ngay cap nhat of this trang thai giai trinh
+	*/
+	@Override
+	public void setNgayCapNhat(java.util.Date ngayCapNhat) {
+		_trangThaiGiaiTrinh.setNgayCapNhat(ngayCapNhat);
+	}
+
+	/**
+	* Returns the ghi chu nguoi duyet of this trang thai giai trinh.
+	*
+	* @return the ghi chu nguoi duyet of this trang thai giai trinh
+	*/
+	@Override
+	public java.lang.String getGhiChuNguoiDuyet() {
+		return _trangThaiGiaiTrinh.getGhiChuNguoiDuyet();
+	}
+
+	/**
+	* Sets the ghi chu nguoi duyet of this trang thai giai trinh.
+	*
+	* @param ghiChuNguoiDuyet the ghi chu nguoi duyet of this trang thai giai trinh
+	*/
+	@Override
+	public void setGhiChuNguoiDuyet(java.lang.String ghiChuNguoiDuyet) {
+		_trangThaiGiaiTrinh.setGhiChuNguoiDuyet(ghiChuNguoiDuyet);
+	}
+
+	@Override
+	public boolean isNew() {
+		return _trangThaiGiaiTrinh.isNew();
+	}
+
+	@Override
+	public void setNew(boolean n) {
+		_trangThaiGiaiTrinh.setNew(n);
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _trangThaiGiaiTrinh.isCachedModel();
+	}
+
+	@Override
+	public void setCachedModel(boolean cachedModel) {
+		_trangThaiGiaiTrinh.setCachedModel(cachedModel);
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _trangThaiGiaiTrinh.isEscapedModel();
+	}
+
+	@Override
+	public java.io.Serializable getPrimaryKeyObj() {
+		return _trangThaiGiaiTrinh.getPrimaryKeyObj();
+	}
+
+	@Override
+	public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
+		_trangThaiGiaiTrinh.setPrimaryKeyObj(primaryKeyObj);
+	}
+
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
+		return _trangThaiGiaiTrinh.getExpandoBridge();
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.model.BaseModel<?> baseModel) {
+		_trangThaiGiaiTrinh.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		_trangThaiGiaiTrinh.setExpandoBridgeAttributes(expandoBridge);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.service.ServiceContext serviceContext) {
+		_trangThaiGiaiTrinh.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new TrangThaiGiaiTrinhWrapper((TrangThaiGiaiTrinh)_trangThaiGiaiTrinh.clone());
+	}
+
+	@Override
+	public int compareTo(
+		vn.dtt.ns.yeucaugiaitrinh.dao.model.TrangThaiGiaiTrinh trangThaiGiaiTrinh) {
+		return _trangThaiGiaiTrinh.compareTo(trangThaiGiaiTrinh);
+	}
+
+	@Override
+	public int hashCode() {
+		return _trangThaiGiaiTrinh.hashCode();
+	}
+
+	@Override
+	public com.liferay.portal.model.CacheModel<vn.dtt.ns.yeucaugiaitrinh.dao.model.TrangThaiGiaiTrinh> toCacheModel() {
+		return _trangThaiGiaiTrinh.toCacheModel();
+	}
+
+	@Override
+	public vn.dtt.ns.yeucaugiaitrinh.dao.model.TrangThaiGiaiTrinh toEscapedModel() {
+		return new TrangThaiGiaiTrinhWrapper(_trangThaiGiaiTrinh.toEscapedModel());
+	}
+
+	@Override
+	public vn.dtt.ns.yeucaugiaitrinh.dao.model.TrangThaiGiaiTrinh toUnescapedModel() {
+		return new TrangThaiGiaiTrinhWrapper(_trangThaiGiaiTrinh.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _trangThaiGiaiTrinh.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _trangThaiGiaiTrinh.toXmlString();
+	}
+
+	@Override
+	public void persist()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_trangThaiGiaiTrinh.persist();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof TrangThaiGiaiTrinhWrapper)) {
+			return false;
+		}
+
+		TrangThaiGiaiTrinhWrapper trangThaiGiaiTrinhWrapper = (TrangThaiGiaiTrinhWrapper)obj;
+
+		if (Validator.equals(_trangThaiGiaiTrinh,
+					trangThaiGiaiTrinhWrapper._trangThaiGiaiTrinh)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
+	 */
+	public TrangThaiGiaiTrinh getWrappedTrangThaiGiaiTrinh() {
+		return _trangThaiGiaiTrinh;
+	}
+
+	@Override
+	public TrangThaiGiaiTrinh getWrappedModel() {
+		return _trangThaiGiaiTrinh;
+	}
+
+	@Override
+	public void resetOriginalValues() {
+		_trangThaiGiaiTrinh.resetOriginalValues();
+	}
+
+	private TrangThaiGiaiTrinh _trangThaiGiaiTrinh;
+}

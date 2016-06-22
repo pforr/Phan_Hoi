@@ -1,0 +1,657 @@
+/**
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+package vn.dtt.ns.thongtinphanhoi.util;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import vn.dtt.cmon.dm.dao.model.DATAITEM;
+import vn.dtt.cmon.user.dao.model.UserMapping;
+import vn.dtt.cmon.user.dao.service.UserHuyenLocalServiceUtil;
+import vn.dtt.cmon.user.dao.service.UserTULocalServiceUtil;
+import vn.dtt.cmon.user.dao.service.UserTinhLocalServiceUtil;
+import vn.dtt.cmon.user.dao.service.UserTramCapLocalServiceUtil;
+import vn.dtt.ns.thongtinphanhoi.business.DataItemBusiness;
+import vn.dtt.ns.thongtinphanhoi.business.TramCapBusiness;
+import vn.dtt.ns.thongtinphanhoi.business.UserMappingBusiness;
+import vn.dtt.sol.ns.tramcap.dao.model.TramCapNuoc;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.User;
+
+public class DiaBanQuanLyUtils {
+
+	/**
+	 * Lay danh sach tinh theo nguoi dung
+	 * 
+	 * @param user
+	 * @param isSupperAdmin
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static List<DATAITEM> getTinh(User user, boolean isSupperAdmin,
+			int start, int end) {
+		List<DATAITEM> ls = new ArrayList<DATAITEM>();
+
+		int userLevel = 0;
+		String maTinh = StringPool.BLANK;
+
+		UserMapping um = UserMappingBusiness.getUserMapping(user);
+
+		if (Validator.isNotNull(um)) {
+			userLevel = um.getUserType();
+			maTinh = um.getOrgCode1();
+		}
+
+		try {
+			if (isSupperAdmin) {
+				ls = DataItemBusiness.getInLevel1(1, start, end);
+			} else {
+				if (userLevel == 1) {
+					ls = UserTULocalServiceUtil.getTinhTUByUser(
+							user.getUserId(), start, end);
+				} else if (userLevel == 2) {
+					DATAITEM tinh = NuocSachUtils.getDataItem(1, 1, maTinh);
+
+					if (Validator.isNotNull(tinh)) {
+						ls.add(NuocSachUtils.getDataItem(1, 1, maTinh));
+					}
+				} else if (userLevel == 3) {
+					DATAITEM tinh = NuocSachUtils.getDataItem(1, 1, maTinh);
+
+					if (Validator.isNotNull(tinh)) {
+						ls.add(NuocSachUtils.getDataItem(1, 1, maTinh));
+					}
+				} else if (userLevel == 4) {
+					DATAITEM tinh = NuocSachUtils.getDataItem(1, 1, maTinh);
+
+					if (Validator.isNotNull(tinh)) {
+						ls.add(tinh);
+					}
+				}
+			}
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return ls;
+	}
+
+	/**
+	 * Lay danh sach huyen theo nguoi dung
+	 * 
+	 * @param user
+	 * @param maTinh
+	 * @param isSupperAdmin
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static List<DATAITEM> getHuyen(User user, String maTinh,
+			long maTramCap, boolean isSupperAdmin, int start, int end) {
+		List<DATAITEM> ls = new ArrayList<DATAITEM>();
+
+		int userLevel = 0;
+
+		UserMapping um = UserMappingBusiness.getUserMapping(user);
+
+		if (Validator.isNotNull(um)) {
+			userLevel = um.getUserType();
+		}
+
+		try {
+			if (isSupperAdmin) {
+				ls = DataItemBusiness.getInLevel2(1, maTinh);
+			} else {
+				if (userLevel == 1) {
+					ls = DataItemBusiness.getInLevel2(1, maTinh);
+				} else if (userLevel == 2) {
+					ls = UserTinhLocalServiceUtil.findHuyenQly(maTinh,
+							user.getUserId(), start, end);
+				} else if (userLevel == 3) {
+					ls = UserHuyenLocalServiceUtil.findHuyenByUser(maTinh,
+							user.getUserId(), start, end);
+				} else if (userLevel == 4) {
+					ls = UserTramCapLocalServiceUtil.findHuyenInTramCaoByUser(
+							maTinh, maTramCap, user.getUserId(), start, end);
+				}
+			}
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return ls;
+	}
+
+	/**
+	 * Lay danh sach xa theo nguoi dung
+	 * 
+	 * @param user
+	 * @param maTinh
+	 * @param maHuyen
+	 * @param isSupperAdmin
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static List<DATAITEM> getXa(User user, String maTinh,
+			String maHuyen, long maTramCap, boolean isSupperAdmin, int start,
+			int end) {
+
+		List<DATAITEM> ls = new ArrayList<DATAITEM>();
+
+		int userLevel = 0;
+
+		UserMapping um = UserMappingBusiness.getUserMapping(user);
+
+		if (Validator.isNotNull(um)) {
+			userLevel = um.getUserType();
+		}
+
+		try {
+			if (isSupperAdmin) {
+				ls = DataItemBusiness.getInLevel3(1, maTinh, maHuyen);
+			} else {
+				if (userLevel == 1) {
+					ls = DataItemBusiness.getInLevel3(1, maTinh, maHuyen);
+				} else if (userLevel == 2) {
+					ls = DataItemBusiness.getInLevel3(1, maTinh, maHuyen);
+				} else if (userLevel == 3) {
+					ls = UserHuyenLocalServiceUtil.findXaThuocHuyenChonByUser(
+							maTinh, maHuyen, user.getUserId(), start, end);
+				} else if (userLevel == 4) {
+					ls = UserTramCapLocalServiceUtil.findXaInHuyenAndTramCap(
+							maTinh, maHuyen, maTramCap, start, end);
+				}
+			}
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return ls;
+	}
+
+	/**
+	 * Lay danh sach tram cap theo nguoi dung
+	 * 
+	 * @param user
+	 * @param maTinh
+	 * @param isSupperAdmin
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static List<TramCapNuoc> getTramCap(User user, String maTinh,
+			boolean isSupperAdmin, int start, int end) {
+		List<TramCapNuoc> ls = new ArrayList<TramCapNuoc>();
+
+		int userLevel = 0;
+
+		UserMapping um = UserMappingBusiness.getUserMapping(user);
+
+		if (Validator.isNotNull(um)) {
+			userLevel = um.getUserType();
+		}
+
+		try {
+			if (isSupperAdmin) {
+				ls = TramCapBusiness.getByTinh(maTinh);
+			} else {
+				if (userLevel == 1) {
+					ls = TramCapBusiness.getByTinh(maTinh);
+				} else if (userLevel == 2) {
+					ls = TramCapBusiness.getByTinh(maTinh);
+				} else if (userLevel == 3) {
+
+				} else if (userLevel == 4) {
+
+					if (Validator.isNull(maTinh)) {
+						maTinh = um.getOrgCode1();
+					}
+
+					ls = UserTramCapLocalServiceUtil.findTramCapByUserId(
+							maTinh, user.getUserId(), start, end);
+				}
+			}
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return ls;
+	}
+
+	public static List<DATAITEM> findXaKhongInHuyenInTramByUser(String maTinh,
+			String maHuyen, long maTram, long userId, int start, int end) {
+		List<DATAITEM> ls = new ArrayList<DATAITEM>();
+
+		try {
+			ls = UserTramCapLocalServiceUtil.findXaKhongInHuyenInTramCapByUser(
+					maTinh, maHuyen, maTram, userId, start, end);
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return ls;
+	}
+
+	public static List<DATAITEM> findXaInHuyenInTramByUser(String maTinh,
+			String maHuyen, long maTram, long userId, int start, int end) {
+		List<DATAITEM> ls = new ArrayList<DATAITEM>();
+
+		try {
+			ls = UserTramCapLocalServiceUtil.findXaInHuyenInTramCapByUser(
+					maTinh, maHuyen, maTram, userId, start, end);
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return ls;
+	}
+
+	public static List<DATAITEM> findHuyenInTramByUser(String maTinh,
+			long maTram, long userId, int start, int end) {
+		List<DATAITEM> ls = new ArrayList<DATAITEM>();
+
+		try {
+			ls = UserTramCapLocalServiceUtil.findHuyenInTramCaoByUser(maTinh,
+					maTram, userId, start, end);
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return ls;
+	}
+
+	public static List<DATAITEM> findHuyenDuocChonByUser(String maTinh,
+			String maHuyen, long userId, int start, int end) {
+		List<DATAITEM> ls = new ArrayList<DATAITEM>();
+
+		try {
+			ls = UserHuyenLocalServiceUtil.findHuyenDuocChonByUser(maTinh,
+					maHuyen, userId, start, end);
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return ls;
+	}
+
+	/**
+	 * Lay danh sach Huyen da chon trong bang phan quyen
+	 * 
+	 * @param maTinh
+	 * @param userId
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static List<DATAITEM> findHuyenChonByUser(String maTinh,
+			long userId, int start, int end) {
+		List<DATAITEM> ls = new ArrayList<DATAITEM>();
+
+		try {
+			ls = UserHuyenLocalServiceUtil.findHuyenDaChonByUser(maTinh,
+					userId, start, end);
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return ls;
+	}
+
+	/**
+	 * Lay danh sach xa thuoc huyen da chon by User
+	 * 
+	 * @param maTinh
+	 * @param maHuyen
+	 * @param userId
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static List<DATAITEM> findXaTrongHuyenChonByUser(String maTinh,
+			String maHuyen, long userId, int start, int end) {
+		List<DATAITEM> ls = new ArrayList<DATAITEM>();
+
+		try {
+			ls = UserHuyenLocalServiceUtil.findXaThuocHuyenChonByUser(maTinh,
+					maHuyen, userId, start, end);
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return ls;
+	}
+
+	/**
+	 * @param maTinh
+	 * @param userId
+	 * @return
+	 */
+	public static int coutHuyenDaChonByUser(String maTinh, long userId) {
+		int count = 0;
+
+		try {
+			count = UserHuyenLocalServiceUtil.countHuyenByUser(maTinh, userId);
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return count;
+	}
+
+	/**
+	 * @param maTinh
+	 * @param maHuyen
+	 * @param userId
+	 * @return
+	 */
+	public static int coutXaTrongHuyenDaChonByUser(String maTinh,
+			String maHuyen, long userId) {
+		int count = 0;
+
+		try {
+			count = UserHuyenLocalServiceUtil.countXaThuocHuyenChonByUser(
+					maTinh, maHuyen, userId);
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return count;
+	}
+
+	public boolean checkTinhContains(String maTinh, List<DATAITEM> lsTinh) {
+		boolean isContains = false;
+
+		for (DATAITEM tinh : lsTinh) {
+			if (Validator.equals(maTinh, tinh.getNode1())) {
+				isContains = true;
+				break;
+			}
+		}
+
+		return isContains;
+	}
+
+	public static List<DATAITEM> getHuyenSelectByTinhUser(String maTinh,
+			long userId, int start, int end) {
+		List<DATAITEM> ls = new ArrayList<DATAITEM>();
+		try {
+			ls = UserTinhLocalServiceUtil.getHuyenSelectByTinhAndUser(maTinh,
+					userId, start, end);
+		} catch (Exception e) {
+			_log.error(e);
+		}
+		return ls;
+	}
+
+	public static List<DATAITEM> getListTinhTU(User user,
+			boolean isSupperAdmin, int start, int end) {
+		List<DATAITEM> ls = new ArrayList<DATAITEM>();
+		long userId = 0;
+
+		if (Validator.isNotNull(user))
+			userId = user.getUserId();
+		try {
+			if (isSupperAdmin) {
+				ls = DataItemBusiness.getInLevel1(1, start, end);
+			} else {
+				ls = UserTULocalServiceUtil.getTinhTUByUser(userId, start, end);
+			}
+
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return ls;
+
+	}
+
+	public static int countListTinhTU(User user, boolean isSupperAdmin) {
+		int count = 0;
+		long userId = 0;
+
+		if (Validator.isNotNull(user))
+			userId = user.getUserId();
+		try {
+			if (isSupperAdmin) {
+				count = DataItemBusiness.countInLevel1(1);
+			} else {
+				count = UserTULocalServiceUtil.countTinhTUByUser(userId);
+			}
+
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return count;
+
+	}
+
+	/**
+	 * Lay danh sach GSV theo huyen
+	 * 
+	 * @param maTinh
+	 * @param maHuyen
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static List<UserMapping> getGSVInHuyen(String maTinh,
+			String maHuyen, int start, int end) {
+		List<UserMapping> lsUser = new ArrayList<UserMapping>();
+
+		try {
+			lsUser = UserHuyenLocalServiceUtil.getGSVInHuyen(maTinh, maHuyen,
+					start, end);
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return lsUser;
+	}
+
+	/**
+	 * Lay danh sach GSV trong tram cap
+	 * 
+	 * @param maTinh
+	 * @param maTramCap
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static List<UserMapping> getUserInTramCap(String maTinh,
+			String maTramCap, int start, int end) {
+		List<UserMapping> lsUser = new ArrayList<UserMapping>();
+
+		try {
+			lsUser = UserTramCapLocalServiceUtil.findUserInTramCap(maTinh,
+					maTramCap, start, end);
+		} catch (Exception e) {
+			_log.error(e);
+		}
+		
+		return lsUser;
+	}
+
+	/**
+	 * Lay danh sach Huyen duoc quan ly (hoac giam sat)
+	 * 
+	 * @param user
+	 * @param maTinh
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static List<DATAITEM> getListHuyenGS(User user, String maTinh,
+			int start, int end) {
+
+		List<DATAITEM> ls = new ArrayList<DATAITEM>();
+		
+		try {
+			long userId = 0;
+
+			if (Validator.isNotNull(user))
+				userId = user.getUserId();
+
+			UserMapping um = UserMappingBusiness.getUserMapping(user);
+
+			if (Validator.isNotNull(um) && um.getUserType() == 2) {
+				// neu cap tinh lay trong bang phan quyen cap Tinh
+				ls = UserTinhLocalServiceUtil.findHuyenQly(maTinh, userId,
+						start, end);
+			} else if (Validator.isNotNull(um) && um.getUserType() == 3) {
+				// neu cap Huyen lay trong bang phan quyen cap Huyen
+				ls = UserTinhLocalServiceUtil.findHuyenQly(maTinh, userId,
+						start, end);
+			} /*
+			 * else if (Validator.isNotNull(um) && um.getUserType() == 1) { ls =
+			 * DataItemBusiness.getInLevel2(1, maTinh); }
+			 */
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return ls;
+	}
+
+	/**
+	 * @param user
+	 * @param maTinh
+	 * @return
+	 */
+	public static int countHuyenByUser(User user, String maTinh) {
+		int count = 0;
+
+		try {
+			long userId = 0;
+
+			if (Validator.isNotNull(user))
+				userId = user.getUserId();
+
+			UserMapping um = UserMappingBusiness.getUserMapping(user);
+
+			if (Validator.isNotNull(um) && um.getUserType() == 2) {
+				// neu cap tinh lay trong bang phan quyen cap Tinh
+				count = UserTinhLocalServiceUtil.countHuyenQly(maTinh, userId);
+			} else if (Validator.isNotNull(um) && um.getUserType() == 3) {
+				// neu cap Huyen lay trong bang phan quyen cap Huyen
+				count = UserHuyenLocalServiceUtil.countHuyenByUser(maTinh,
+						userId);
+			}
+		} catch (Exception e) {
+			_log.error(e);
+		}
+		return count;
+	}
+
+	/**
+	 * Lay danh sach tram cap by User
+	 * 
+	 * @param user
+	 * @param maTinh
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static List<TramCapNuoc> getListTramCap(User user, String maTinh,
+			int start, int end) {
+
+		List<TramCapNuoc> ls = new ArrayList<TramCapNuoc>();
+
+		try {
+			long userId = 0;
+
+			if (Validator.isNotNull(user))
+				userId = user.getUserId();
+
+			UserMapping um = UserMappingBusiness.getUserMapping(user);
+
+			if (Validator.isNotNull(um) && um.getUserType() == 2) {
+				// neu cap tinh lay trong bang phan quyen cap Tinh
+				ls = TramCapBusiness.findTramCap(maTinh, start, end);
+			} else if (Validator.isNotNull(um) && um.getUserType() == 4) {
+				// neu cap Huyen lay trong bang phan quyen cap Huyen
+				ls = UserTramCapLocalServiceUtil.findTramCapByUserId(maTinh,
+						userId, start, end);
+			}
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return ls;
+	}
+
+	public static List<DATAITEM> getHuyenInTramCap(String maTinh,
+			long maTramCap, int start, int end) {
+		List<DATAITEM> ls = new ArrayList<DATAITEM>();
+
+		try {
+			ls = UserTramCapLocalServiceUtil.findHuyenInTramCap(maTinh,
+					maTramCap, start, end);
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return ls;
+	}
+
+	public static List<DATAITEM> getXaInHuyenAndTramCap(String maTinh,
+			String maHuyen, long maTramCap, int start, int end) {
+		List<DATAITEM> ls = new ArrayList<DATAITEM>();
+
+		try {
+			ls = UserTramCapLocalServiceUtil.findXaInHuyenAndTramCap(maTinh,
+					maHuyen, maTramCap, start, end);
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return ls;
+	}
+
+	public static int countTramCapByUser(User user, String maTinh) {
+
+		int count = 0;
+
+		try {
+			long userId = 0;
+
+			if (Validator.isNotNull(user))
+				userId = user.getUserId();
+
+			UserMapping um = UserMappingBusiness.getUserMapping(user);
+
+			if (Validator.isNotNull(um) && um.getUserType() == 2) {
+				// neu cap tinh lay trong bang phan quyen cap Tinh
+				count = TramCapBusiness.countTramCap(maTinh);
+			} else if (Validator.isNotNull(um) && um.getUserType() == 4) {
+				// neu cap Huyen lay trong bang phan quyen cap Huyen
+				count = UserTramCapLocalServiceUtil.countTramCapByUser(maTinh,
+						userId);
+			}
+		} catch (Exception e) {
+			_log.error(e);
+		}
+
+		return count;
+	}
+
+	private static final Log _log = LogFactoryUtil
+			.getLog(DiaBanQuanLyUtils.class);
+}

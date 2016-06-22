@@ -1,0 +1,211 @@
+package vn.dtt.ns.yeucaugiaitrinh.dao.service.persistence;
+
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import vn.dtt.ns.thongtinphanhoi.util.ThongTinPhanHoiConstants;
+import vn.dtt.ns.yeucaugiaitrinh.dao.model.YeuCauGiaiTrinh;
+import vn.dtt.ns.yeucaugiaitrinh.dao.model.impl.YeuCauGiaiTrinhImpl;
+
+import com.liferay.portal.kernel.dao.orm.QueryPos;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.dao.orm.SQLQuery;
+import com.liferay.portal.kernel.dao.orm.Session;
+import com.liferay.portal.kernel.dao.orm.Type;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+
+public class YeuCauGiaiTrinhFinderImpl extends BasePersistenceImpl<YeuCauGiaiTrinh> implements YeuCauGiaiTrinhFinder{
+	
+	public long countYeuCauGiaiTrinh(String maTinh, String maHuyen, String maXa, int trangThaiGiaiTrinh, String maChuDe, int soLuotPhanHoi, Date fromDate, Date toDate) throws SystemException {
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			StringBuffer sql = new StringBuffer("");
+			sql.append(" SELECT COUNT(DISTINCT a.matinh, a.mahuyen, a.maxa, a.machude, a.soluong_theochude) AS TOTAL FROM ws_phanhoi.ws_yeucau_giaitrinh a"); 
+			sql.append(" JOIN ws_phanhoi.ws_trangthai_giaitrinh b");
+			sql.append(" ON a.id = b.yeucau_giaitrinh_id");
+			sql.append(" WHERE 1 = 1 AND b.userId is not null AND b.userId > 0");
+			
+			if(trangThaiGiaiTrinh > 0){				
+				sql.append(" AND a.trangthai = ?");				
+			}
+
+			if(!StringPool.BLANK.equals(maTinh)){
+				sql.append(" AND a.matinh = ?");
+			}
+			
+			if(!StringPool.BLANK.equals(maHuyen)){
+				sql.append(" AND a.mahuyen = ?");
+			}
+			
+			if(!StringPool.BLANK.equals(maXa)){
+				sql.append(" AND a.maxa = ?");
+			}
+			
+			if(!StringPool.BLANK.equals(maChuDe)){
+				sql.append(" AND a.machude = ?");
+			}
+			
+			if(soLuotPhanHoi > 0){
+				sql.append(" AND a.soluong_theochude > ?");
+			}
+			
+			if(fromDate != null){
+				sql.append(" AND a.ngaytao >=?");
+			}
+			
+			if(toDate != null){
+				sql.append(" AND a.ngaytao <=?");
+			}						
+			
+			SQLQuery q = session.createSQLQuery(sql.toString());
+			q.addScalar("TOTAL", Type.LONG);
+
+			QueryPos qPos = QueryPos.getInstance(q);
+			
+			if(trangThaiGiaiTrinh > 0){							
+				qPos.add(trangThaiGiaiTrinh);		
+			}
+			
+			if(!StringPool.BLANK.equals(maTinh)){
+				qPos.add(maTinh);
+			}
+			
+			if(!StringPool.BLANK.equals(maHuyen)){
+				qPos.add(maHuyen);
+			}
+			
+			if(!StringPool.BLANK.equals(maXa)){
+				qPos.add(maXa);
+			}
+			
+			if(!StringPool.BLANK.equals(maChuDe)){
+				qPos.add(maChuDe);
+			}
+			
+			if(soLuotPhanHoi > 0){
+				qPos.add(soLuotPhanHoi);
+			}
+			
+			if(fromDate != null){
+				qPos.add(fromDate);
+			}
+			
+			if(toDate != null){
+				qPos.add(toDate);
+			}
+			
+			Iterator<Long> itr = q.iterate();
+			if (itr.hasNext()) {
+				Long value = itr.next();
+				
+				if (value != null) {
+					return value;
+				}
+			}
+		} catch (Exception e) {
+			throw new SystemException(e);
+		} finally {
+			closeSession(session);
+		}
+		
+		return 0;
+	}
+	
+	public List<YeuCauGiaiTrinh> searchYeuCauGiaiTrinh(String maTinh, String maHuyen, String maXa, int trangThaiGiaiTrinh, String maChuDe, int soLuotPhanHoi, Date fromDate, Date toDate, int start, int end) throws SystemException {
+		Session session = null;
+				
+		try {
+			session = openSession();
+			
+			StringBuffer sql = new StringBuffer("");
+			sql.append(" SELECT DISTINCT a.* FROM ws_phanhoi.ws_yeucau_giaitrinh a");
+			sql.append(" JOIN ws_phanhoi.ws_trangthai_giaitrinh b");
+			sql.append(" ON a.id = b.yeucau_giaitrinh_id");
+			sql.append(" WHERE 1 = 1 AND b.userId is not null AND b.userId > 0");
+			
+			if(trangThaiGiaiTrinh > 0){						
+				sql.append(" AND a.trangthai = ?");				
+			}
+
+			if(!StringPool.BLANK.equals(maTinh)){
+				sql.append(" AND a.matinh = ?");
+			}
+			
+			if(!StringPool.BLANK.equals(maHuyen)){
+				sql.append(" AND a.mahuyen = ?");
+			}
+			
+			if(!StringPool.BLANK.equals(maXa)){
+				sql.append(" AND a.maxa = ?");
+			}
+			
+			if(!StringPool.BLANK.equals(maChuDe)){
+				sql.append(" AND a.machude = ?");
+			}
+			
+			if(soLuotPhanHoi > 0){
+				sql.append(" AND a.soluong_theochude > ?");
+			}
+			
+			if(fromDate != null){
+				sql.append(" AND a.ngaytao >=?");
+			}
+			
+			if(toDate != null){
+				sql.append(" AND a.ngaytao <=?");
+			}					
+			
+			SQLQuery q = session.createSQLQuery(sql.toString());
+			q.setCacheable(false);						
+			
+			q.addEntity("YeuCauGiaiTrinh", YeuCauGiaiTrinhImpl.class);
+           
+			QueryPos qPos = QueryPos.getInstance(q);
+			
+			if(trangThaiGiaiTrinh > 0){				
+				qPos.add(trangThaiGiaiTrinh);		
+			}
+			
+			if(!StringPool.BLANK.equals(maTinh)){
+				qPos.add(maTinh);
+			}
+			
+			if(!StringPool.BLANK.equals(maHuyen)){
+				qPos.add(maHuyen);
+			}
+			
+			if(!StringPool.BLANK.equals(maXa)){
+				qPos.add(maXa);
+			}
+			
+			if(!StringPool.BLANK.equals(maChuDe)){
+				qPos.add(maChuDe);
+			}
+			
+			if(soLuotPhanHoi > 0){
+				qPos.add(soLuotPhanHoi);
+			}
+			
+			if(fromDate != null){
+				qPos.add(fromDate);
+			}
+			
+			if(toDate != null){
+				qPos.add(toDate);
+			}
+				
+			return (List<YeuCauGiaiTrinh>) QueryUtil.list(q, getDialect(), start, end);						
+			
+		} catch (Exception e) {
+			throw new SystemException(e);
+		} finally {
+			closeSession(session);
+		}
+	}		
+}

@@ -1,0 +1,427 @@
+
+package vn.dtt.ns.reporting;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.portlet.PortletSession;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+import javax.servlet.http.HttpServletRequest;
+
+import vn.dtt.sol.ns.kehoachvesinh.dao.model.KeHoachVeSinh;
+import vn.dtt.sol.ns.kehoachvesinh.dao.service.KeHoachVeSinhLocalServiceUtil;
+import vn.dtt.sol.ns.vesinhmoitruong.dao.service.DanhGiaVeSinhXaNewLocalServiceUtil;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JRParameter;
+import net.sf.jasperreports.engine.JRPrintPage;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.HttpHeaders;
+import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
+
+public class ReportUtils {
+	
+	private static Log _log = LogFactoryUtil.getLog(ReportUtils.class);
+	
+	public static final String PATH_FILE_REPORT = "report";
+	public static final String PATH_FILE_EXPORT = "export";
+
+	public static final String GIAITRINH = "giaitrinh";
+	public static final String PHANHOI = "phanhoi";
+	
+	public static String getTemplateReportFilePath(HttpServletRequest request, String reportOrexport, String fileName) {
+		
+		return request.getSession().getServletContext().getRealPath("/").replace("/", File.separator).replace(File.separator + ".", "") +
+			reportOrexport + File.separator + fileName;
+		/**
+		 * ResourceRequest
+		 *
+		 * return resourceRequest.getPortletSession().getPortletContext().getRealPath("/").
+		 * replace("/", File.separator).replace(File.separator + ".", "") + File.separator + reportOrexport + File.separator + fileName;
+		 * */
+	}
+	
+	public static String getTemplateReportFilePath(PortletSession session) {
+		
+
+		return session.getPortletContext().getRealPath("/").replace("/", File.separator).replace(File.separator + ".", "");
+		/**
+		 * ResourceRequest
+		 *
+		 * return resourceRequest.getPortletSession().getPortletContext().getRealPath("/").
+		 * replace("/", File.separator).replace(File.separator + ".", "") + File.separator + reportOrexport + File.separator + fileName;
+		 * */
+	}
+	
+	public static String getTemplateReportFilePath(ResourceRequest request) {
+		return request.getPortletSession().getPortletContext().getRealPath("/").replace("/", File.separator).replace(File.separator + ".", "");
+		
+	}
+	
+	public static String getTemplateReportFilePath(HttpServletRequest request) {
+		
+		return request.getSession().getServletContext().getRealPath("/").replace("/", File.separator).replace(File.separator + ".", "");
+		/**
+		 * ResourceRequest
+		 *
+		 * return resourceRequest.getPortletSession().getPortletContext().getRealPath("/").
+		 * replace("/", File.separator).replace(File.separator + ".", "") + File.separator + reportOrexport + File.separator + fileName;
+		 * */
+	}
+	
+	
+
+	/*
+	 * Function Export to Server, se luu thanh file moi show ra hoac cho download
+	 */
+	public static String exportFunction(
+			String realPath, String dirParent, String tenFile_Template, String tenFile_Export, JRDataSource dataSource, Map<String, Object> parameters,String duoiFile) 
+		throws IOException {
+		
+		
+		
+		String tenFile = tenFile_Export+"."+duoiFile;
+		
+		InputStream inputStream = null;
+		
+		try {
+			String pathTemplate = realPath + PATH_FILE_REPORT + File.separator + dirParent + File.separator + tenFile_Template;
+			inputStream = new FileInputStream(pathTemplate);
+			
+			JasperDesign jasperDesign = JRXmlLoader.load(inputStream);
+			JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+			if(duoiFile.equalsIgnoreCase(ReportConstant.DUOI_XLS)){
+				parameters.put(JRParameter.IS_IGNORE_PAGINATION, Boolean.TRUE);
+				parameters.put("TYPE_EXPORT", "XLS");
+			}
+			parameters.put("SUBREPORT_DIR", realPath + PATH_FILE_REPORT + File.separator + dirParent + File.separator);
+			parameters.put("IMG_DIR", realPath + PATH_FILE_REPORT + File.separator + "img" + File.separator);
+			_log.info("--SUBREPORT_DIR--"+realPath + PATH_FILE_REPORT + File.separator + dirParent + File.separator+"--");
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+			String pathExport = realPath + PATH_FILE_EXPORT + File.separator + tenFile;
+			
+			
+			//JasperExportManager.exportReportToPdfFile(jasperPrint, pathExport);
+			
+			_log.info("==exportFunction=="+pathExport);
+			
+			if(duoiFile.equalsIgnoreCase(ReportConstant.DUOI_PDF)){
+				JasperExportManager.exportReportToPdfFile(jasperPrint, pathExport);
+			}else if(duoiFile.equalsIgnoreCase(ReportConstant.DUOI_XLS)){
+				makeExcelXlsReport(jasperPrint, pathExport  );
+			}else if(duoiFile.equalsIgnoreCase(ReportConstant.DUOI_DOC)){
+				makeWordDocReport(jasperPrint, pathExport);
+			}
+		} catch (JRException e) {
+			
+			tenFile = ReportConstant.TEN_FILE_DEFAULT+"."+duoiFile;
+			
+			_log.error(e);
+		} finally {
+			if(inputStream != null) {
+				inputStream.close();
+			}
+		}
+		
+		return tenFile;
+	}
+	
+	 public static void makeWordDocReport(JasperPrint jasperPrint, String pathExport ) throws IOException {
+		 ByteArrayOutputStream baoxDoc = null;
+		 FileOutputStream outputfile = null;
+		 try {
+			 baoxDoc = new ByteArrayOutputStream();
+			 JRDocxExporter exporterDoc = new JRDocxExporter();
+			 exporterDoc.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+			 exporterDoc.setParameter(JRExporterParameter.OUTPUT_STREAM, baoxDoc);
+			 exporterDoc.exportReport();
+			 
+			 outputfile = new FileOutputStream(pathExport);
+			 outputfile.write(baoxDoc.toByteArray());
+			 _log.info("==makeWordDocReport=="+pathExport);
+			 
+		 } catch (Exception e) {
+			 _log.error("==Error==makeWordDocReport=="+e);
+		 }finally{
+			 if(baoxDoc != null){
+				 baoxDoc.close();
+			 }
+			 if(outputfile != null){
+				 outputfile.close();
+			 }
+		 }
+		  
+	 }
+	public static void makeExcelXlsReport(JasperPrint jasperPrint, String pathExport  ) throws IOException{
+		OutputStream outStream = null;
+		ByteArrayOutputStream baoxXLS = null;
+		try {
+			baoxXLS = new ByteArrayOutputStream();
+			
+			JRXlsExporter exporterXLS = new JRXlsExporter();
+			exporterXLS.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
+			exporterXLS.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,pathExport);
+			exporterXLS.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, baoxXLS);
+			/**
+			 * FALSE, phan trang, 1 file jasper, when in pdf co n trang, co n sheet
+			 * TRUE, ko phan trang, 1 file jasper, when in pdf co n trang, co 1 sheet
+			 * */
+			
+			exporterXLS.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
+			exporterXLS.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.TRUE);
+			exporterXLS.setParameter(JRXlsExporterParameter.IS_COLLAPSE_ROW_SPAN, Boolean.FALSE);
+			exporterXLS.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, Boolean.FALSE);
+			exporterXLS.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
+			exporterXLS.setParameter(JRXlsExporterParameter.IS_FONT_SIZE_FIX_ENABLED, Boolean.TRUE);
+			
+			exporterXLS.exportReport();
+			
+
+			outStream = new FileOutputStream(pathExport);
+			outStream.write(baoxXLS.toByteArray());
+			_log.info("==makeExcelXlsReport==="+pathExport);
+			
+		} catch (Exception e) {
+			_log.error("==Error==makeExcelXlsReport=="+e);
+			
+		}finally{
+			if(baoxXLS != null){
+				baoxXLS.close();
+			}
+			if(outStream != null){
+				outStream.close();
+			}
+		}
+	}
+
+	
+	/*
+	 * se cho view file truc tiep
+	 * 
+	 */
+	public static void exportFunctionResourceURL(
+			String realPath, String dirParent, String tenFile_Template, String tenFile_Export, JRDataSource dataSource, Map<String, Object> parameters,String duoiFile, ResourceResponse resourceResponse) 
+		throws IOException {
+		_log.info("==exportFunctionResourceURL==tenFile_Export----"+tenFile_Export);
+		_log.info("==exportFunctionResourceURL==duoiFile----"+duoiFile);
+		
+		String tenFile = tenFile_Export+"."+duoiFile;
+		InputStream inputStream = null;
+		
+		try {
+			String pathTemplate = realPath + PATH_FILE_REPORT + File.separator + dirParent + File.separator + tenFile_Template;
+			inputStream = new FileInputStream(pathTemplate);
+			
+			JasperDesign jasperDesign = JRXmlLoader.load(inputStream);
+			JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+			if(duoiFile.equalsIgnoreCase(ReportConstant.DUOI_XLS)){
+//				if(!( (tenFile_Template.equalsIgnoreCase(ReportConstant.GIAY_KHVESINH_TEMP))
+//					|| (tenFile_Template.equalsIgnoreCase(ReportConstant.GIAY_KETQUAXETNGHIEMNUOC_TEMP))
+//					|| (tenFile_Template.equalsIgnoreCase(ReportConstant.GIAY_KETQUAXETNGHIEMNUOC_TU_TEMP))) 
+//					|| (tenFile_Template.equalsIgnoreCase(ReportConstant.GIAY_HNT_TEMP))
+//					|| (tenFile_Template.equalsIgnoreCase(ReportConstant.GIAY_HNT_TU_TEMP))
+//					){
+					parameters.put(JRParameter.IS_IGNORE_PAGINATION, Boolean.TRUE);// neu khong phai cac bao cao tren thi in excel se ra cung 1 sheet.
+//				}
+				parameters.put("TYPE_EXPORT", "XLS");
+			}
+			parameters.put("SUBREPORT_DIR", realPath + PATH_FILE_REPORT + File.separator + dirParent + File.separator);
+			parameters.put("IMG_DIR", realPath + PATH_FILE_REPORT + File.separator + "img" + File.separator);
+			
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+			
+			_log.info("==exportFunctionResourceURL==duoiFile----"+duoiFile);
+			
+			if(duoiFile.equalsIgnoreCase(ReportConstant.DUOI_PDF)){
+				makePdfReportResourceURL(jasperPrint,resourceResponse,tenFile);
+			}else if(duoiFile.equalsIgnoreCase(ReportConstant.DUOI_XLS)){
+				makeExcelXlsReportResourceURL(jasperPrint,resourceResponse,tenFile  );
+			}else if(duoiFile.equalsIgnoreCase(ReportConstant.DUOI_DOC)){
+				makeWordDocReportResourceURL(jasperPrint,resourceResponse,tenFile);			
+			}
+			
+		} catch (Exception e) {
+			_log.error(e);
+		} finally {
+			if(inputStream != null) {
+				inputStream.close();				
+			}
+		}
+		
+		
+	}
+	
+	public static void makePdfReportResourceURL(JasperPrint jasperPrint,ResourceResponse resourceResponse,String tenFile) throws IOException {
+		ByteArrayOutputStream baos = null;
+		OutputStream out = null;
+		try{
+			baos = new ByteArrayOutputStream();
+			JRPdfExporter exporterPdf = new JRPdfExporter();
+			exporterPdf.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+			exporterPdf.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
+			exporterPdf.exportReport();
+			
+			resourceResponse.setContentType(ContentTypes.APPLICATION_PDF);
+			resourceResponse.addProperty(HttpHeaders.CACHE_CONTROL, HttpHeaders.CACHE_CONTROL_NO_CACHE_VALUE);
+			resourceResponse.addProperty(HttpHeaders.CONTENT_DISPOSITION, "filename=" + tenFile);
+			resourceResponse.setContentLength(baos.size());
+			
+			out = resourceResponse.getPortletOutputStream();
+			baos.writeTo(out);
+			
+			baos.flush();
+			baos.close();
+			
+			out.flush();
+			out.close();
+			_log.info("==Vao----makePdfReportResourceURL==");
+		} catch (Exception e) {
+			 _log.error("==Error==makePdfReportResourceURL=="+e);
+		}finally{
+			if(baos != null){
+				baos.close();
+			}
+			if(out != null){
+				out.close();
+			}
+		}
+	}
+	
+	public static void makeExcelXlsReportResourceURL(JasperPrint jasperPrint,ResourceResponse resourceResponse,String tenFile  ) throws IOException{
+		ByteArrayOutputStream baos = null;
+		OutputStream out = null;
+		try {
+			baos = new ByteArrayOutputStream();
+			
+			JRXlsExporter exporterXLS = new JRXlsExporter();
+			exporterXLS.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
+			exporterXLS.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, baos);
+			/**
+			 * FALSE, phan trang, 1 file jasper, when in pdf co n trang, co n sheet
+			 * TRUE, ko phan trang, 1 file jasper, when in pdf co n trang, co 1 sheet
+			 * */
+			
+			//exporterXLS.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
+			exporterXLS.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.TRUE);
+			exporterXLS.setParameter(JRXlsExporterParameter.IS_COLLAPSE_ROW_SPAN, Boolean.FALSE);
+			exporterXLS.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, Boolean.FALSE);
+			exporterXLS.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
+			exporterXLS.setParameter(JRXlsExporterParameter.IS_FONT_SIZE_FIX_ENABLED, Boolean.TRUE);			
+			exporterXLS.exportReport();
+			
+			resourceResponse.setContentType(ContentTypes.APPLICATION_VND_MS_EXCEL);
+			resourceResponse.addProperty(HttpHeaders.CACHE_CONTROL, HttpHeaders.CACHE_CONTROL_NO_CACHE_VALUE);
+			resourceResponse.addProperty(HttpHeaders.CONTENT_DISPOSITION, "filename=" + tenFile);
+			resourceResponse.setContentLength(baos.size());
+			
+			out = resourceResponse.getPortletOutputStream();
+			baos.writeTo(out);
+			
+			baos.flush();
+			baos.close();
+			
+			out.flush();
+			out.close();
+			_log.info("==Vao--makeExcelXlsReportResourceURL===");
+			
+		} catch (Exception e) {
+			_log.error("==Error==makeExcelXlsReportResourceURL=="+e);
+			
+		}finally{
+			if(baos != null){
+				baos.close();
+			}
+			if(out != null){
+				out.close();
+			}
+		}
+	}
+	
+	public static void makeWordDocReportResourceURL(JasperPrint jasperPrint,ResourceResponse resourceResponse,String tenFile ) throws IOException  {
+		 ByteArrayOutputStream baos = null;
+		 OutputStream out = null;
+		 try {
+			 baos = new ByteArrayOutputStream();
+			 JRDocxExporter exporterDoc = new JRDocxExporter();
+			 exporterDoc.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+			 exporterDoc.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
+			 exporterDoc.exportReport();
+			 
+			 resourceResponse.setContentType(ContentTypes.APPLICATION_MSWORD);
+			 resourceResponse.addProperty(HttpHeaders.CACHE_CONTROL, HttpHeaders.CACHE_CONTROL_NO_CACHE_VALUE);
+			 resourceResponse.addProperty(HttpHeaders.CONTENT_DISPOSITION, "filename=" + tenFile);
+			 resourceResponse.setContentLength(baos.size());
+			 
+			 out = resourceResponse.getPortletOutputStream();
+			 baos.writeTo(out);
+			 
+			 baos.flush();
+			 baos.close();
+			 
+			 out.flush();
+			 out.close();
+			 _log.info("==Vao----makeWordDocReportResourceURL==");
+			 
+		 } catch (Exception e) {
+			 _log.error("==Error==makeWordDocReportResourceURL=="+e);
+		 }finally{
+			 if(baos != null){
+				 baos.close();
+			 }
+			 if(out != null){
+				 out.close();
+			 }
+		 }
+		  
+	 }
+
+	public static void prepareDataDL2_2(String namBaoCao,int userId,String maTinh){
+	List<KeHoachVeSinh> keHoach = null;
+		
+		try {
+			keHoach = KeHoachVeSinhLocalServiceUtil.search(Integer.parseInt(namBaoCao), maTinh, null,QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+			if (Validator.isNotNull(keHoach) && Validator.isNotNull(namBaoCao)) {
+				for (KeHoachVeSinh keHoachVeSinh : keHoach) {
+					
+					DanhGiaVeSinhXaNewLocalServiceUtil.initDanhGiaVeSinh(maTinh, keHoachVeSinh.getMaHuyen(), Integer.parseInt(namBaoCao),userId);
+				}
+				
+			}
+			
+		} catch (Exception e) {
+			_log.error(e);
+		}
+		
+
+		
+	}
+
+
+}

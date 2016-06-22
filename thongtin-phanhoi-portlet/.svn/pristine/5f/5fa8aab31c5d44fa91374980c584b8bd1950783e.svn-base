@@ -1,0 +1,40 @@
+package vn.dtt.ns.thongkephanhoi;
+
+import java.io.IOException;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletConfig;
+import javax.portlet.PortletException;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+
+import vn.dtt.ns.reporting.ReportBusinessUtils;
+
+import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.util.bridges.mvc.MVCPortlet;
+
+/**
+ * Portlet implementation class ThongKePhanHoiAction
+ */
+public class ThongKePhanHoiAction extends MVCPortlet {
+	public void search(ActionRequest actionRequest, ActionResponse actionResponse) throws Exception {
+		String maTinh = ParamUtil.getString(actionRequest, "selectMaTinh", "");
+		String strMonthAndYear = ParamUtil.getString(actionRequest, "monthAndYear", "");		
+			
+		actionResponse.setRenderParameter("maTinh", maTinh);
+		actionResponse.setRenderParameter("monthAndYear", String.valueOf(strMonthAndYear));
+		PortletConfig portletConfig = (PortletConfig) actionRequest.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);		
+		SessionMessages.add(actionRequest, portletConfig.getPortletName() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_SUCCESS_MESSAGE);		
+	}
+	@Override
+	public void serveResource(ResourceRequest resourceRequest,
+			ResourceResponse resourceResponse) throws IOException,
+			PortletException {
+		ReportBusinessUtils.inBaoCaoDLI(resourceRequest, resourceResponse);
+		// TODO Auto-generated method stub
+		
+	}
+}

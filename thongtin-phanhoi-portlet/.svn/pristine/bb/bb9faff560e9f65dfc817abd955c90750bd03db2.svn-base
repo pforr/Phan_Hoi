@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="vn.dtt.ns.thongtinphanhoi.dao.model.ChiTietThongTinPhanHoi">
+		<field name="id" type="long" />
+		<field name="thongTinPhanHoiId" type="long" />
+		<field name="maThongTinPhanAnh" type="String" />
+	</model>
+	<model name="vn.dtt.ns.thongtinphanhoi.dao.model.ThongTinPhanHoi">
+		<field name="id" type="long" />
+		<field name="soDienThoai" type="String" />
+		<field name="thoiGianGoi" type="Date" />
+		<field name="trangThaiGiaoDich" type="int" />
+		<field name="tongDai" type="int" />
+		<field name="loaiGiaoDichPhanHoi" type="int" />
+		<field name="maTinh" type="String" />
+		<field name="maHuyen" type="String" />
+		<field name="maXa" type="String" />
+		<field name="maTramCapNuoc" type="String" />
+	</model>
+</model-hints>

@@ -1,0 +1,49 @@
+/**
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package vn.dtt.ns.yeucaugiaitrinh.dao.service.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import vn.dtt.ns.yeucaugiaitrinh.dao.model.YeuCauGiaiTrinh;
+import vn.dtt.ns.yeucaugiaitrinh.dao.service.base.YeuCauGiaiTrinhLocalServiceBaseImpl;
+
+import com.liferay.portal.kernel.exception.SystemException;
+
+/**
+ * The implementation of the yeu cau giai trinh local service.
+ *
+ * <p>
+ * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link vn.dtt.ns.yeucaugiaitrinh.dao.service.YeuCauGiaiTrinhLocalService} interface.
+ *
+ * <p>
+ * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
+ * </p>
+ *
+ * @author tubq
+ * @see vn.dtt.ns.yeucaugiaitrinh.dao.service.base.YeuCauGiaiTrinhLocalServiceBaseImpl
+ * @see vn.dtt.ns.yeucaugiaitrinh.dao.service.YeuCauGiaiTrinhLocalServiceUtil
+ */
+public class YeuCauGiaiTrinhLocalServiceImpl
+	extends YeuCauGiaiTrinhLocalServiceBaseImpl {
+	
+	public long countYeuCauGiaiTrinh(String maTinh, String maHuyen, String maChuDe, int trangThai, Date fromDate, Date toDate) throws SystemException{	
+		return yeuCauGiaiTrinhFinder.countYeuCauGiaiTrinh(maTinh, maHuyen, maChuDe, trangThai,  fromDate, toDate);
+	}
+	
+	public List<YeuCauGiaiTrinh> searchYeuCauGiaiTrinh(String maTinh, String maHuyen, String maChuDe, int trangThai, Date fromDate, Date toDate, int start, int end) throws SystemException{	
+		return yeuCauGiaiTrinhFinder.searchYeuCauGiaiTrinh(maTinh, maHuyen, maChuDe, trangThai, fromDate, toDate, start, end);
+	}
+}

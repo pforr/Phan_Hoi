@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
+<service-builder package-path="vn.dtt.ns.thongtinphanhoi.dao">
+	<author>tubq</author>
+	<namespace>thongtinphanhoi</namespace>
+
+	<entity name="ThongTinPhanHoi" table="ws_thongtin_phanhoi" local-service="true" remote-service="true" data-source="thongtinphanhoiDatasource">
+		<!-- PK fields -->
+		<column name="id" type="long" primary="true" db-name="id"/>
+		
+		<!-- Other fields -->
+		<column name="soDienThoai" db-name="sodienthoai" type="String" />
+		<column name="thoiGianGoi" db-name="thoigiangoi" type="Date" />
+		<column name="trangThaiGiaoDich" db-name="trangthai_giaodich" type="int" />
+		<column name="tongDai" db-name="tongdai" type="int" />
+		<column name="loaiGiaoDichPhanHoi" db-name="loai_giaodich_phanhoi" type="int" />
+		<column name="maTinh" db-name="matinh" type="String" />
+		<column name="maHuyen" db-name="mahuyen" type="String" />
+		<column name="maXa" db-name="maxa" type="String" />
+		<column name="maTramCapNuoc" db-name="matramcapnuoc" type="String" />
+				
+		<!-- Order -->
+		<order by="desc">
+			<order-column name="id" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="SoDienThoai" return-type="Collection">
+			<finder-column name="soDienThoai" />
+		</finder>
+	</entity>
+	
+	<entity name="ChiTietThongTinPhanHoi" table="ws_chitiet_thongtin_phanhoi" local-service="true" remote-service="true" data-source="thongtinphanhoiDatasource">
+		<!-- PK fields -->
+		<column name="id" type="long" primary="true" db-name="id"/>
+		
+		<!-- FK fields -->
+		<column name="thongTinPhanHoiId" db-name="thongtin_phanhoi_id" type="long" />
+		
+		<!-- Other fields -->				
+		<column name="maThongTinPhanAnh" db-name="mathongtinphananh" type="String" />
+				
+		<!-- Order -->
+		<order by="desc">
+			<order-column name="id" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="ThongTinPhanHoiId" return-type="Collection">
+			<finder-column name="thongTinPhanHoiId" />
+		</finder>
+	</entity>
+	
+</service-builder>

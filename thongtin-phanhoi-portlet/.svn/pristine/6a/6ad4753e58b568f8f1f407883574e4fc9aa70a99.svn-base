@@ -1,0 +1,96 @@
+/**
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package vn.dtt.ns.thongtinphanhoi.dao.service.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import vn.dtt.ns.thongtinphanhoi.dao.model.ChiTietThongTinPhanHoi;
+import vn.dtt.ns.thongtinphanhoi.dao.model.TopicDetails;
+import vn.dtt.ns.thongtinphanhoi.dao.model.TopicPhanHoi;
+import vn.dtt.ns.thongtinphanhoi.dao.service.base.ChiTietThongTinPhanHoiLocalServiceBaseImpl;
+
+import com.liferay.portal.kernel.exception.SystemException;
+
+/**
+ * The implementation of the chi tiet thong tin phan hoi local service.
+ *
+ * <p>
+ * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link vn.dtt.ns.thongtinphanhoi.dao.service.ChiTietThongTinPhanHoiLocalService} interface.
+ *
+ * <p>
+ * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
+ * </p>
+ *
+ * @author tubq
+ * @see vn.dtt.ns.thongtinphanhoi.dao.service.base.ChiTietThongTinPhanHoiLocalServiceBaseImpl
+ * @see vn.dtt.ns.thongtinphanhoi.dao.service.ChiTietThongTinPhanHoiLocalServiceUtil
+ */
+public class ChiTietThongTinPhanHoiLocalServiceImpl
+	extends ChiTietThongTinPhanHoiLocalServiceBaseImpl {
+	/*
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never reference this interface directly. Always use {@link vn.dtt.ns.thongtinphanhoi.dao.service.ChiTietThongTinPhanHoiLocalServiceUtil} to access the chi tiet thong tin phan hoi local service.
+	 */
+	
+	public long countTopicPhanHoi(String maTinh, String maHuyen, String maXa, String topicCode, Date fromDate, Date toDate) throws SystemException{	
+		return chiTietThongTinPhanHoiFinder.countTopicPhanHoi(maTinh, maHuyen, maXa, topicCode, fromDate, toDate);
+	}
+	
+	public List<TopicPhanHoi> searchTopicPhanHoi(String maTinh, String maHuyen, String maXa, String topicCode, Date fromDate, Date toDate, int start, int end) throws SystemException{	
+		return chiTietThongTinPhanHoiFinder.searchTopicPhanHoi(maTinh, maHuyen, maXa, topicCode, fromDate, toDate, start, end);
+	}
+	
+	public long countPhanHoiByTopicCode(String topicCode, String maTinh, String maHuyen, String maXa, String feedbackCode, Date fromDate, Date toDate) throws SystemException{	
+		return chiTietThongTinPhanHoiFinder.countPhanHoiByTopicCode(topicCode, maTinh, maHuyen, maXa, feedbackCode, fromDate, toDate);
+	}
+	
+	public long countPhanHoiByMaThongTinPhanAnh(String topicCode, String feedbackCode, String maTinh, String maHuyen, String maXa, Date fromDate, Date toDate) throws SystemException{	
+		return chiTietThongTinPhanHoiFinder.countPhanHoiByMaThongTinPhanAnh(topicCode, feedbackCode, maTinh, maHuyen, maXa, fromDate, toDate);
+	}
+	
+	public List<TopicPhanHoi> getAllTopicPhanHoi() throws SystemException{	
+		return chiTietThongTinPhanHoiFinder.getAllTopicPhanHoi();
+	}
+	
+	public List<TopicDetails> getTopicDetailsByTopicCode(String topicCode, String maTinh, String maHuyen, String maXa, String feedbackCode, Date fromDate, Date toDate, int start, int end) throws SystemException{	
+		return chiTietThongTinPhanHoiFinder.getTopicDetailsByTopicCode(topicCode, maTinh, maHuyen, maXa, feedbackCode, fromDate, toDate, start, end);
+	}
+	
+	public TopicDetails getTopicDetailsById(long id) throws SystemException{	
+		return chiTietThongTinPhanHoiFinder.getTopicDetailsById(id);
+	}
+	
+	public long countPhanHoiByTrangThaiYcgt(int trangThaiYcgt, String topicCode, String feedbackCode, String maTinh, String maHuyen, String maXa, Date fromDate, Date toDate) throws SystemException{	
+		return chiTietThongTinPhanHoiFinder.countPhanHoiByTrangThaiYcgt(trangThaiYcgt, topicCode, feedbackCode, maTinh, maHuyen, maXa, fromDate, toDate);
+	}
+	
+	public List<TopicDetails> getTopicDetailsByTrangThaiYcgt(int trangThaiYcgt, String topicCode, String feedbackCode, String maTinh, String maHuyen, String maXa, Date fromDate, Date toDate, int start, int end) throws SystemException{	
+		return chiTietThongTinPhanHoiFinder.getTopicDetailsByTrangThaiYcgt(trangThaiYcgt, topicCode, feedbackCode, maTinh, maHuyen, maXa, fromDate, toDate, start, end);
+	}
+	
+	public long countTopicDetailsByYcgtId(long ycgtId) throws SystemException{	
+		return chiTietThongTinPhanHoiFinder.countTopicDetailsByYcgtId(ycgtId);
+	}
+	
+	public List<TopicDetails> getTopicDetailsByYcgtId(long ycgtId, int start, int end) throws SystemException{	
+		return chiTietThongTinPhanHoiFinder.getTopicDetailsByYcgtId(ycgtId, start, end);
+	}
+	
+	public List<ChiTietThongTinPhanHoi> getChiTietThongTinPhanHoiBy_ttphId_thx(long thongTinPhanHoiId, String maTinh, String maHuyen, String maXa) throws SystemException{	
+		return chiTietThongTinPhanHoiFinder.getChiTietThongTinPhanHoiBy_ttphId_thx(thongTinPhanHoiId, maTinh, maHuyen, maXa);
+	}
+}

@@ -1,0 +1,14 @@
+vn.dtt.thongkephanhoi.backend.label.thongke=Th\u1ED1ng k\u00EA ph\u1EA3n h\u1ED3i
+vn.dtt.thongkephanhoi.backend.label.tinhthanhpho=T\u1EC9nh/Th\u00E0nh ph\u1ED1
+vn.dtt.thongkephanhoi.backend.label.select.tinhthanhpho=--- Ch\u1ECDn T\u1EC9nh/Th\u00E0nh ph\u1ED1 ---
+vn.dtt.thongkephanhoi.backend.label.selectmonth=Th\u00E1ng/N\u0103m
+vn.dtt.thongkephanhoi.backend.button.search=Th\u00E1ng/N\u0103m
+vn.dtt.thongkephanhoi.backend.label.stt=STT
+vn.dtt.thongkephanhoi.backend.label.chude=Chủ đề
+vn.dtt.thongkephanhoi.backend.label.sophanhoi=Số phản hồi
+vn.dtt.thongkephanhoi.backend.label.sophanhoidataoycgt=S\u1ED1 ph\u1EA3n h\u1ED3i \u0111\u00E3 t\u1EA1o Y/c gi\u1EA3i tr\u00ECnh
+vn.dtt.thongkephanhoi.backend.label.sophanhoichuataoycgt=S\u1ED1 ph\u1EA3n h\u1ED3i ch\u01B0a t\u1EA1o Y/c gi\u1EA3i tr\u00ECnh
+vn.dtt.thongkephanhoi.backend.button.exportdoc=Export Word
+vn.dtt.thongkephanhoi.backend.button.chuyensangmb=Move to Transparency website
+vn.dtt.thongkephanhoi.transfer2mb.label.successmessage=Move to Transparency website successfully !
+vn.dtt.thongkephanhoi.transfer2mb.label.errornamthangmessage=Please choose Month/Year !

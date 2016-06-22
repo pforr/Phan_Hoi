@@ -1,0 +1,39 @@
+package vn.dtt.ns.thongtinphanhoi.util;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.liferay.portal.kernel.util.StringPool;
+
+public class DateTimeUtil {
+	
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+	
+	public static String formatDate(Date dateInput) {
+		
+		String result = StringPool.BLANK;
+		try {
+			result = DATE_FORMAT.format(dateInput);
+			
+			return result;
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return StringPool.BLANK;
+		}
+	}
+	
+	public static Date convertStringToDate(String stringInput) {
+		
+		Date result = null;
+		try {
+			result = DATE_FORMAT.parse(stringInput);
+			
+			return result;
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return null;
+		}
+	}
+}

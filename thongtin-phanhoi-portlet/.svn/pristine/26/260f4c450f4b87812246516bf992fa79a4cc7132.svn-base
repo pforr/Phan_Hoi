@@ -1,0 +1,22 @@
+package vn.dtt.ns.yeucaugiaitrinh.business;
+
+import vn.dtt.ns.yeucaugiaitrinh.dao.model.YeuCauGiaiTrinh;
+import vn.dtt.ns.yeucaugiaitrinh.dao.service.YeuCauGiaiTrinhLocalServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+public class YeuCauGiaiTrinhBusiness {
+	private static Log _log = LogFactoryUtil.getLog(YeuCauGiaiTrinhBusiness.class);
+	public static YeuCauGiaiTrinh getYeuCauGiaiTrinh(long ycgtId){
+		YeuCauGiaiTrinh yeuCauGiaiTrinh = null;
+		
+		try{
+			yeuCauGiaiTrinh = YeuCauGiaiTrinhLocalServiceUtil.getYeuCauGiaiTrinh(ycgtId);
+		}catch (Exception e) {
+			_log.error(e);
+		}
+		
+		return yeuCauGiaiTrinh;
+	}
+}

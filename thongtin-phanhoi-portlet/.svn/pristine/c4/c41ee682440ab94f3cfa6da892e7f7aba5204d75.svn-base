@@ -1,0 +1,259 @@
+package vn.dtt.ns.minhbach;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.HashMap;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.AuthCache;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicAuthCache;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.util.EntityUtils;
+import org.apache.commons.codec.binary.Base64;
+
+
+public class TestLiferayJSON {
+
+    public static void main(String[] args) throws Exception {
+/*        ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
+        HttpHost targetHost = new HttpHost("localhost", 8080, "http");
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        BasicHttpContext ctx = new BasicHttpContext();
+        // Plugin Context Use for Liferay 6.1
+        HttpPost post = new HttpPost("/LiferayJSONWebservices-portlet/api/jsonws/employee/get-employee");
+        Base64 b = new Base64();
+        String encoding = b.encodeAsString(new String("test@liferay.com:test").getBytes());
+        post.setHeader("Authorization", "Basic " + encoding);
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("emplyeeId", "30722"));
+        UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "UTF-8");
+        post.setEntity(entity);
+        HttpResponse resp = httpclient.execute(targetHost, post, ctx);
+        resp.getEntity().writeTo(System.out);
+        httpclient.getConnectionManager().shutdown();*/
+        
+       // addArticle();
+    	updatEntry();
+    }
+    
+ 
+    private static void addArticle() {
+
+        //HttpHost targetHost = new HttpHost("119.17.253.82");
+        HttpHost targetHost = new HttpHost("hanoi.dtt.vn", 8182, "http");
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        httpclient.getCredentialsProvider().setCredentials(
+         new AuthScope(targetHost.getHostName(), targetHost.getPort()),
+         new UsernamePasswordCredentials("test@liferay.com", "dtt@2015"));
+
+
+        // Create AuthCache instance
+        AuthCache authCache = new BasicAuthCache();
+        // Generate BASIC scheme object and add it to the local auth cache
+        BasicScheme basicAuth = new BasicScheme();
+        authCache.put(targetHost, basicAuth);
+
+
+        // Add AuthCache to the execution context
+
+        BasicHttpContext ctx = new BasicHttpContext();
+        ctx.setAttribute(ClientContext.AUTH_CACHE, authCache);
+
+        HttpPost post = new HttpPost("/api/jsonws/journalarticle/add-article");
+       // HttpPost post = new HttpPost("/LiferayJSONWebservices-portlet/api/jsonws/employee/get-employee");
+        Base64 b = new Base64();
+        String encoding = b.encodeAsString(new String("test@liferay.com:dtt@2015").getBytes());
+       // post.setHeader("Authorization", "Basic " + encoding);      
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.add(Calendar.DAY_OF_YEAR, -1);
+        Calendar nextWeek = Calendar.getInstance();
+        nextWeek.add(Calendar.WEEK_OF_YEAR, 1);
+        List < NameValuePair > params = new ArrayList < NameValuePair > ();
+        params.add(new BasicNameValuePair("groupId", "10181"));
+        params.add(new BasicNameValuePair("folderId", "0"));
+        params.add(new BasicNameValuePair("classNameId", "0"));
+        params.add(new BasicNameValuePair("classPK", "0"));
+        params.add(new BasicNameValuePair("articleId", "800"));
+        params.add(new BasicNameValuePair("autoArticleId", "true"));
+        params.add(new BasicNameValuePair("titleMap", "{\"en_US\":\"Test JSON Article 2\"}"));
+        params.add(new BasicNameValuePair("descriptionMap", "{\"en_US\":\"Test JSON Description\"}"));
+        params.add(new BasicNameValuePair("content", "<?xml version=\"1.0\"?><root available-locales=\"en_US\" default-locale=\"en_US\">" + "<dynamic-element name=\"content\" type=\"text_area\" index-type=\"keyword\" index=\"0\">" + "<dynamic-content language-id=\"en_US\">" + "<![CDATA[<div ><h2>Welcome To Liferay Portal</h2></div>]]></dynamic-content></dynamic-element></root>"));
+        params.add(new BasicNameValuePair("type", "general"));
+        params.add(new BasicNameValuePair("ddmStructureKey", ""));
+        params.add(new BasicNameValuePair("ddmTemplateKey", ""));
+        params.add(new BasicNameValuePair("layoutUuid", ""));
+        params.add(new BasicNameValuePair("displayDateMonth", "" + (1 + yesterday.get(Calendar.MONTH))));
+        params.add(new BasicNameValuePair("displayDateDay", "" + yesterday.get(Calendar.DAY_OF_MONTH)));
+        params.add(new BasicNameValuePair("displayDateYear", "" + yesterday.get(Calendar.YEAR)));
+        params.add(new BasicNameValuePair("displayDateHour", "" + yesterday.get(Calendar.HOUR_OF_DAY)));
+        params.add(new BasicNameValuePair("displayDateMinute", "" + yesterday.get(Calendar.MINUTE)));
+        params.add(new BasicNameValuePair("expirationDateMonth", "" + (1 + nextWeek.get(Calendar.MONTH))));
+        params.add(new BasicNameValuePair("expirationDateDay", "" + nextWeek.get(Calendar.DAY_OF_MONTH)));
+        params.add(new BasicNameValuePair("expirationDateYear", "" + nextWeek.get(Calendar.YEAR)));
+        params.add(new BasicNameValuePair("expirationDateHour", "" + nextWeek.get(Calendar.HOUR_OF_DAY)));
+        params.add(new BasicNameValuePair("expirationDateMinute", "" + nextWeek.get(Calendar.MINUTE)));
+        params.add(new BasicNameValuePair("neverExpire", "true"));
+        params.add(new BasicNameValuePair("reviewDateMonth", "" + (1 + nextWeek.get(Calendar.MONTH))));
+        params.add(new BasicNameValuePair("reviewDateDay", "" + nextWeek.get(Calendar.DAY_OF_MONTH)));
+        params.add(new BasicNameValuePair("reviewDateYear", "" + nextWeek.get(Calendar.YEAR)));
+        params.add(new BasicNameValuePair("reviewDateHour", "" + nextWeek.get(Calendar.HOUR_OF_DAY)));
+        params.add(new BasicNameValuePair("reviewDateMinute", "" + nextWeek.get(Calendar.MINUTE)));
+        params.add(new BasicNameValuePair("neverReview", "true"));
+        params.add(new BasicNameValuePair("indexable", "true"));
+        params.add(new BasicNameValuePair("articleURL", "articleURL"));
+        params.add(new BasicNameValuePair("serviceContext", "{}"));
+        params.add(new BasicNameValuePair("serviceContext.scopeGroupId", "10181"));
+        try {
+         UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "UTF-8");
+         post.setEntity(entity);
+         HttpResponse resp = httpclient.execute(targetHost, post, ctx);
+         try {
+         // System.out.println(resp.getStatusLine());
+         // System.out.println(EntityUtils.toString(entity));
+          System.out.println(resp.getStatusLine());
+          resp.getEntity().writeTo(System.out);
+          //resp.getEntity().getContentEncoding().
+          EntityUtils.consume(entity);
+         } finally {
+          httpclient.getConnectionManager().shutdown();
+         }
+        } catch (Exception e) {
+         e.printStackTrace();
+        }
+
+       }
+    
+    private static void updatEntry() {
+
+        //HttpHost targetHost = new HttpHost("119.17.253.82");
+        HttpHost targetHost = new HttpHost("hanoi.dtt.vn", 8182, "http");
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        httpclient.getCredentialsProvider().setCredentials(
+         new AuthScope(targetHost.getHostName(), targetHost.getPort()),
+         new UsernamePasswordCredentials("test@liferay.com", "dtt@2015"));
+
+
+        // Create AuthCache instance
+        AuthCache authCache = new BasicAuthCache();
+        // Generate BASIC scheme object and add it to the local auth cache
+        BasicScheme basicAuth = new BasicScheme();
+        authCache.put(targetHost, basicAuth);
+
+
+        // Add AuthCache to the execution context
+
+        BasicHttpContext ctx = new BasicHttpContext();
+        ctx.setAttribute(ClientContext.AUTH_CACHE, authCache);
+
+        HttpPost post = new HttpPost("/api/jsonws/assetentry/update-entry");
+       // HttpPost post = new HttpPost("/LiferayJSONWebservices-portlet/api/jsonws/employee/get-employee");
+        Base64 b = new Base64();
+        String encoding = b.encodeAsString(new String("test@liferay.com:dtt@2015").getBytes());
+       // post.setHeader("Authorization", "Basic " + encoding);      
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.add(Calendar.DAY_OF_YEAR, -1);
+        Calendar nextWeek = Calendar.getInstance();
+        nextWeek.add(Calendar.WEEK_OF_YEAR, 1);
+        List < NameValuePair > params = new ArrayList < NameValuePair > ();
+        params.add(new BasicNameValuePair("groupId", "10181"));
+        params.add(new BasicNameValuePair("className", "com.liferay.portlet.journal.model.JournalArticle"));
+        params.add(new BasicNameValuePair("classPK", "44582"));
+        params.add(new BasicNameValuePair("categoryIds ", "28710"));
+        try {
+         UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "UTF-8");
+         post.setEntity(entity);
+         HttpResponse resp = httpclient.execute(targetHost, post, ctx);
+         try {
+         // System.out.println(resp.getStatusLine());
+         // System.out.println(EntityUtils.toString(entity));
+          System.out.println(resp.getStatusLine());
+          resp.getEntity().writeTo(System.out);
+          //resp.getEntity().getContentEncoding().
+          EntityUtils.consume(entity);
+         } finally {
+          httpclient.getConnectionManager().shutdown();
+         }
+        } catch (Exception e) {
+         e.printStackTrace();
+        }
+
+       }
+       
+    
+    public static void addArticle1() throws Exception {
+        HttpHost targetHost = new HttpHost("localhost", 8080, "http");
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        httpclient.getCredentialsProvider().setCredentials(
+                new AuthScope(targetHost.getHostName(), targetHost.getPort()),
+                new UsernamePasswordCredentials("test", "test"));
+
+        // Create AuthCache instance
+        AuthCache authCache = new BasicAuthCache();
+        // Generate BASIC scheme object and add it to the local
+        // auth cache
+        BasicScheme basicAuth = new BasicScheme();
+        authCache.put(targetHost, basicAuth);
+
+        // Add AuthCache to the execution context
+        BasicHttpContext ctx = new BasicHttpContext();
+        ctx.setAttribute(ClientContext.AUTH_CACHE, authCache);
+
+        HttpPost post = new HttpPost("/tunnel-web/secure/json");
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.add(Calendar.DAY_OF_YEAR, -1);
+        Calendar nextWeek = Calendar.getInstance();
+        nextWeek.add(Calendar.WEEK_OF_YEAR, 1);
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("serviceClassName", "com.liferay.portlet.journal.service.JournalArticleServiceUtil"));
+        params.add(new BasicNameValuePair("serviceMethodName", "addArticle"));
+        params.add(new BasicNameValuePair("serviceParameters", "[groupId,articleId,autoArticleId,title,description,content,type,structureId,templateId,displayDateMonth,displayDateDay,displayDateYear,displayDateHour,displayDateMinute,expirationDateMonth,expirationDateDay,expirationDateYear,expirationDateHour,expirationDateMinute,neverExpire,reviewDateMonth,reviewDateDay,reviewDateYear,reviewDateHour,reviewDateMinute,neverReview,indexable,articleURL,serviceContext]"));
+        params.add(new BasicNameValuePair("serviceParameterTypes", "[long,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,int,int,int,int,int,int,int,int,boolean,int,int,int,int,int,boolean,boolean,java.lang.String,com.liferay.portal.service.ServiceContext]"));
+        params.add(new BasicNameValuePair("groupId", "10156"));
+        params.add(new BasicNameValuePair("articleId", "60000"));
+        params.add(new BasicNameValuePair("autoArticleId", "false"));
+        params.add(new BasicNameValuePair("title", "Test JSON Article"));
+        params.add(new BasicNameValuePair("description", "Test JSON Description"));
+        params.add(new BasicNameValuePair("content", "<?xml version='1.0' encoding='UTF-8'?><root available-locales=\"en_US\" default-locale=\"en_US\"><static-content language-id=\"en_US\"><![CDATA[<p>\n" +
+                "\ttest content</p>]]></static-content></root>"));
+        params.add(new BasicNameValuePair("type", "general"));
+        params.add(new BasicNameValuePair("structureId", ""));
+        params.add(new BasicNameValuePair("templateId", ""));
+        params.add(new BasicNameValuePair("displayDateMonth", "" + (1 + yesterday.get(Calendar.MONTH))));
+        params.add(new BasicNameValuePair("displayDateDay", "" + yesterday.get(Calendar.DAY_OF_MONTH)));
+        params.add(new BasicNameValuePair("displayDateYear", "" + yesterday.get(Calendar.YEAR)));
+        params.add(new BasicNameValuePair("displayDateHour", "" + yesterday.get(Calendar.HOUR_OF_DAY)));
+        params.add(new BasicNameValuePair("displayDateMinute", "" + yesterday.get(Calendar.MINUTE)));
+        params.add(new BasicNameValuePair("expirationDateMonth", "" + (1 + nextWeek.get(Calendar.MONTH))));
+        params.add(new BasicNameValuePair("expirationDateDay", "" + nextWeek.get(Calendar.DAY_OF_MONTH)));
+        params.add(new BasicNameValuePair("expirationDateYear", "" + nextWeek.get(Calendar.YEAR)));
+        params.add(new BasicNameValuePair("expirationDateHour", "" + nextWeek.get(Calendar.HOUR_OF_DAY)));
+        params.add(new BasicNameValuePair("expirationDateMinute", "" + nextWeek.get(Calendar.MINUTE)));
+        params.add(new BasicNameValuePair("neverExpire", "false"));
+        params.add(new BasicNameValuePair("reviewDateMonth", "" + (1 + nextWeek.get(Calendar.MONTH))));
+        params.add(new BasicNameValuePair("reviewDateDay", "" + nextWeek.get(Calendar.DAY_OF_MONTH)));
+        params.add(new BasicNameValuePair("reviewDateYear", "" + nextWeek.get(Calendar.YEAR)));
+        params.add(new BasicNameValuePair("reviewDateHour", "" + nextWeek.get(Calendar.HOUR_OF_DAY)));
+        params.add(new BasicNameValuePair("reviewDateMinute", "" + nextWeek.get(Calendar.MINUTE)));
+        params.add(new BasicNameValuePair("neverReview", "false"));
+        params.add(new BasicNameValuePair("indexable", "true"));
+        params.add(new BasicNameValuePair("articleURL", "articleURL"));
+        params.add(new BasicNameValuePair("serviceContext", "{}"));
+        UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "UTF-8");
+        post.setEntity(entity);
+        HttpResponse resp = httpclient.execute(targetHost, post, ctx);
+        System.out.println(resp.getStatusLine());
+        resp.getEntity().writeTo(System.out);
+        httpclient.getConnectionManager().shutdown();
+
+    }
+}
